@@ -1,4 +1,6 @@
 # pipeline
+
+[![Join the chat at https://gitter.im/bythebay/pipeline](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/bythebay/pipeline?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 Complete Pipeline Training at Big Data Scala By the Bay
 
 We want to create a uniform data pipeline, e.g. tweets, flowing through Akka=>Kafka=>Spark=>Cassandra.  E.g. Helena Edelson has a KilrWeather app that can be reused.
