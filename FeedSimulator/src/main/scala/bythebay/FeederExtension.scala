@@ -10,6 +10,10 @@ object FeederExtension extends ExtensionKey[FeederExtension]
 class FeederExtension(system: ExtendedActorSystem) extends Extension {
 
   val systemConfig = system.settings.config
+
+  val dataDirectory = systemConfig.getString("pipeline.dataDirectory")
+
+
   val kafkaHost = systemConfig.getString("pipeline.kafkaHost")
   val kafkaTopic = systemConfig.getString("pipeline.kafkaTopic")
 

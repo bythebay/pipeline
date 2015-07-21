@@ -39,7 +39,7 @@ class FeederActor extends Actor with ActorLogging with FeederExtensionActor{
   }
 
   def initRatingsFile() {
-    val source = scala.io.Source.fromFile("data/ratings.dat")
+    val source = scala.io.Source.fromFile(feederExtension.dataDirectory + "/ratings.dat")
     ratingsDataSet = source.getLines
   }
 }
