@@ -1,0 +1,17 @@
+{
+  "id": "notebook",
+  "cpus": 0.25,
+  "mem": 2048.0,
+  "instances": 1,
+  "acceptedResourceRoles": [ "public" ],
+  "container": {
+    "type": "DOCKER",
+    "docker": {
+      "network": "HOST",
+      "image": "andypetrella/spark-notebook:0.6.0-scala-2.10.4-spark-1.4.1-hadoop-2.4.0",
+      "portMappings": [
+        { "containerPort": 9000, "hostPort": 0, "servicePort": 9000, "protocol": "tcp" }
+      ]
+    }
+  }
+}
