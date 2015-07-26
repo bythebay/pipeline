@@ -1,9 +1,9 @@
 {
   "id": "notebook",
-  "cpus": 0.25,
+  "cpus": 2,
   "mem": 2048.0,
   "instances": 1,
-  "acceptedResourceRoles": [ "public" ],
+  "acceptedResourceRoles": [ "slave_public" ],
   "container": {
     "type": "DOCKER",
     "docker": {
