@@ -44,7 +44,7 @@ object StreamConsumer {
     // Connect to the Spark cluster:
     val sc = new SparkContext(sparkConf)
     val ssc = new StreamingContext(sc, Seconds(1))
-    ssc.checkpoint()
+  //  ssc.checkpoint()
     val cc = CassandraConnector(sc.getConf)
     createSchema(cc)
     (sc, ssc, cc)
