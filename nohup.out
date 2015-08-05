@@ -1,0 +1,214 @@
+Unable to find a $JAVA_HOME at "/usr", continuing with system-provided Java...
+Unable to find a $JAVA_HOME at "/usr", continuing with system-provided Java...
+Ivy Default Cache set to: /Users/cfregly/.ivy2/cache
+The jars for the packages stored in: /Users/cfregly/.ivy2/jars
+:: loading settings :: url = jar:file:/Users/cfregly/spark-1.4.1-bin-fluxcapacitor/lib/spark-assembly-1.4.1-hadoop2.6.0.jar!/org/apache/ivy/core/settings/ivysettings.xml
+org.apache.spark#spark-streaming-kafka-assembly_2.10 added as a dependency
+com.datastax.spark#spark-cassandra-connector-java_2.10 added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent;1.0
+	confs: [default]
+	found org.apache.spark#spark-streaming-kafka-assembly_2.10;1.4.1 in list
+	found org.spark-project.spark#unused;1.0.0 in list
+	found com.datastax.spark#spark-cassandra-connector-java_2.10;1.4.0-M2 in central
+	found com.datastax.spark#spark-cassandra-connector_2.10;1.4.0-M2 in list
+	found org.apache.cassandra#cassandra-clientutil;2.1.5 in list
+	found com.datastax.cassandra#cassandra-driver-core;2.1.5 in list
+	found io.netty#netty;3.9.0.Final in list
+	found com.codahale.metrics#metrics-core;3.0.2 in list
+	found org.slf4j#slf4j-api;1.7.5 in list
+	found org.apache.commons#commons-lang3;3.3.2 in list
+	found com.google.guava#guava;14.0.1 in list
+	found org.joda#joda-convert;1.2 in list
+	found joda-time#joda-time;2.3 in list
+	found com.twitter#jsr166e;1.1.0 in list
+	found org.scala-lang#scala-reflect;2.10.5 in list
+	[2.10.5] org.scala-lang#scala-reflect;2.10.5
+:: resolution report :: resolve 669ms :: artifacts dl 14ms
+	:: modules in use:
+	com.codahale.metrics#metrics-core;3.0.2 from list in [default]
+	com.datastax.cassandra#cassandra-driver-core;2.1.5 from list in [default]
+	com.datastax.spark#spark-cassandra-connector-java_2.10;1.4.0-M2 from central in [default]
+	com.datastax.spark#spark-cassandra-connector_2.10;1.4.0-M2 from list in [default]
+	com.google.guava#guava;14.0.1 from list in [default]
+	com.twitter#jsr166e;1.1.0 from list in [default]
+	io.netty#netty;3.9.0.Final from list in [default]
+	joda-time#joda-time;2.3 from list in [default]
+	org.apache.cassandra#cassandra-clientutil;2.1.5 from list in [default]
+	org.apache.commons#commons-lang3;3.3.2 from list in [default]
+	org.apache.spark#spark-streaming-kafka-assembly_2.10;1.4.1 from list in [default]
+	org.joda#joda-convert;1.2 from list in [default]
+	org.scala-lang#scala-reflect;2.10.5 from list in [default]
+	org.slf4j#slf4j-api;1.7.5 from list in [default]
+	org.spark-project.spark#unused;1.0.0 from list in [default]
+	---------------------------------------------------------------------
+	|                  |            modules            ||   artifacts   |
+	|       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+	---------------------------------------------------------------------
+	|      default     |   15  |   0   |   0   |   0   ||   15  |   0   |
+	---------------------------------------------------------------------
+
+:: problems summary ::
+:::: ERRORS
+	unknown resolver sbt-chain
+
+	unknown resolver sbt-chain
+
+	unknown resolver sbt-chain
+
+	unknown resolver sbt-chain
+
+	unknown resolver sbt-chain
+
+	unknown resolver sbt-chain
+
+	unknown resolver sbt-chain
+
+	unknown resolver sbt-chain
+
+	unknown resolver sbt-chain
+
+	unknown resolver sbt-chain
+
+	unknown resolver sbt-chain
+
+	unknown resolver sbt-chain
+
+	unknown resolver sbt-chain
+
+
+:: USE VERBOSE OR DEBUG MESSAGE LEVEL FOR MORE DETAILS
+:: retrieving :: org.apache.spark#spark-submit-parent
+	confs: [default]
+	0 artifacts copied, 15 already retrieved (0kB/11ms)
+Warning: Local jar /Users/cfregly/workspace-fluxcapacitor/pipeline/target/scala-2.10/ratingsimulator_2.10-1.0.jar does not exist, skipping.
+java.lang.ClassNotFoundException: com.bythebay.pipeline.spark.streaming.StreamingRatings
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:278)
+	at org.apache.spark.deploy.SparkSubmit$.org$apache$spark$deploy$SparkSubmit$$runMain(SparkSubmit.scala:634)
+	at org.apache.spark.deploy.SparkSubmit$.doRunMain$1(SparkSubmit.scala:170)
+	at org.apache.spark.deploy.SparkSubmit$.submit(SparkSubmit.scala:193)
+	at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:112)
+	at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+15/08/05 13:47:57 INFO Utils: Shutdown hook called
+Unable to find a $JAVA_HOME at "/usr", continuing with system-provided Java...
+Unable to find a $JAVA_HOME at "/usr", continuing with system-provided Java...
+Ivy Default Cache set to: /Users/cfregly/.ivy2/cache
+The jars for the packages stored in: /Users/cfregly/.ivy2/jars
+:: loading settings :: url = jar:file:/Users/cfregly/spark-1.4.1-bin-fluxcapacitor/lib/spark-assembly-1.4.1-hadoop2.6.0.jar!/org/apache/ivy/core/settings/ivysettings.xml
+org.apache.spark#spark-streaming-kafka-assembly_2.10 added as a dependency
+com.datastax.spark#spark-cassandra-connector-java_2.10 added as a dependency
+:: resolving dependencies :: org.apache.spark#spark-submit-parent;1.0
+	confs: [default]
+	found org.apache.spark#spark-streaming-kafka-assembly_2.10;1.4.1 in list
+	found org.spark-project.spark#unused;1.0.0 in list
+	found com.datastax.spark#spark-cassandra-connector-java_2.10;1.4.0-M2 in central
+	found com.datastax.spark#spark-cassandra-connector_2.10;1.4.0-M2 in list
+	found org.apache.cassandra#cassandra-clientutil;2.1.5 in list
+	found com.datastax.cassandra#cassandra-driver-core;2.1.5 in list
+	found io.netty#netty;3.9.0.Final in list
+	found com.codahale.metrics#metrics-core;3.0.2 in list
+	found org.slf4j#slf4j-api;1.7.5 in list
+	found org.apache.commons#commons-lang3;3.3.2 in list
+	found com.google.guava#guava;14.0.1 in list
+	found org.joda#joda-convert;1.2 in list
+	found joda-time#joda-time;2.3 in list
+	found com.twitter#jsr166e;1.1.0 in list
+	found org.scala-lang#scala-reflect;2.10.5 in list
+	[2.10.5] org.scala-lang#scala-reflect;2.10.5
+:: resolution report :: resolve 615ms :: artifacts dl 14ms
+	:: modules in use:
+	com.codahale.metrics#metrics-core;3.0.2 from list in [default]
+	com.datastax.cassandra#cassandra-driver-core;2.1.5 from list in [default]
+	com.datastax.spark#spark-cassandra-connector-java_2.10;1.4.0-M2 from central in [default]
+	com.datastax.spark#spark-cassandra-connector_2.10;1.4.0-M2 from list in [default]
+	com.google.guava#guava;14.0.1 from list in [default]
+	com.twitter#jsr166e;1.1.0 from list in [default]
+	io.netty#netty;3.9.0.Final from list in [default]
+	joda-time#joda-time;2.3 from list in [default]
+	org.apache.cassandra#cassandra-clientutil;2.1.5 from list in [default]
+	org.apache.commons#commons-lang3;3.3.2 from list in [default]
+	org.apache.spark#spark-streaming-kafka-assembly_2.10;1.4.1 from list in [default]
+	org.joda#joda-convert;1.2 from list in [default]
+	org.scala-lang#scala-reflect;2.10.5 from list in [default]
+	org.slf4j#slf4j-api;1.7.5 from list in [default]
+	org.spark-project.spark#unused;1.0.0 from list in [default]
+	---------------------------------------------------------------------
+	|                  |            modules            ||   artifacts   |
+	|       conf       | number| search|dwnlded|evicted|| number|dwnlded|
+	---------------------------------------------------------------------
+	|      default     |   15  |   0   |   0   |   0   ||   15  |   0   |
+	---------------------------------------------------------------------
+:: retrieving :: org.apache.spark#spark-submit-parent
+	confs: [default]
+	0 artifacts copied, 15 already retrieved (0kB/11ms)
+Warning: Local jar /Users/cfregly/workspace-fluxcapacitor/pipeline/target/scala-2.10/ratingsimulator_2.10-1.0.jar does not exist, skipping.
+java.lang.ClassNotFoundException: com.bythebay.pipeline.spark.streaming.StreamingRatings
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:366)
+	at java.net.URLClassLoader$1.run(URLClassLoader.java:355)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.net.URLClassLoader.findClass(URLClassLoader.java:354)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:425)
+	at java.lang.ClassLoader.loadClass(ClassLoader.java:358)
+	at java.lang.Class.forName0(Native Method)
+	at java.lang.Class.forName(Class.java:278)
+	at org.apache.spark.deploy.SparkSubmit$.org$apache$spark$deploy$SparkSubmit$$runMain(SparkSubmit.scala:634)
+	at org.apache.spark.deploy.SparkSubmit$.doRunMain$1(SparkSubmit.scala:170)
+	at org.apache.spark.deploy.SparkSubmit$.submit(SparkSubmit.scala:193)
+	at org.apache.spark.deploy.SparkSubmit$.main(SparkSubmit.scala:112)
+	at org.apache.spark.deploy.SparkSubmit.main(SparkSubmit.scala)
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+15/08/05 13:48:19 INFO Utils: Shutdown hook called
+Unable to find a $JAVA_HOME at "/usr", continuing with system-provided Java...
+[0m[[0minfo[0m] [0mLoading project definition from /Users/cfregly/workspace-bythebay/pipeline/project[0m
+[0m[[0minfo[0m] [0mSet current project to RatingSimulator (in build file:/Users/cfregly/workspace-bythebay/pipeline/)[0m
+[0m[[33mwarn[0m] [0mScala version was updated by one of library dependencies:[0m
+[0m[[33mwarn[0m] [0m	* org.scala-lang:scala-library:(2.10.4, 2.10.0) -> 2.10.5[0m
+[0m[[33mwarn[0m] [0mTo force scalaVersion, add the following:[0m
+[0m[[33mwarn[0m] [0m	ivyScala := ivyScala.value map { _.copy(overrideScalaVersion = true) }[0m
+[0m[[33mwarn[0m] [0mRun 'evicted' to see detailed eviction warnings[0m
+[0m[[0minfo[0m] [0mRunning com.bythebay.pipeline.akka.feeder.FeederMain [0m
+log4j:WARN No appenders could be found for logger (kafka.utils.VerifiableProperties).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+[ERROR] [08/05/2015 13:51:15.493] [MyActorSystem-akka.actor.default-dispatcher-4] [akka://MyActorSystem/user/feederActor] datasets/dating/ratings.csv (No such file or directory)
+akka.actor.ActorInitializationException: exception during creation
+	at akka.actor.ActorInitializationException$.apply(Actor.scala:166)
+	at akka.actor.ActorCell.create(ActorCell.scala:596)
+	at akka.actor.ActorCell.invokeAll$1(ActorCell.scala:456)
+	at akka.actor.ActorCell.systemInvoke(ActorCell.scala:478)
+	at akka.dispatch.Mailbox.processAllSystemMessages(Mailbox.scala:263)
+	at akka.dispatch.Mailbox.run(Mailbox.scala:219)
+	at akka.dispatch.ForkJoinExecutorConfigurator$AkkaForkJoinTask.exec(AbstractDispatcher.scala:397)
+	at scala.concurrent.forkjoin.ForkJoinTask.doExec(ForkJoinTask.java:260)
+	at scala.concurrent.forkjoin.ForkJoinPool$WorkQueue.runTask(ForkJoinPool.java:1339)
+	at scala.concurrent.forkjoin.ForkJoinPool.runWorker(ForkJoinPool.java:1979)
+	at scala.concurrent.forkjoin.ForkJoinWorkerThread.run(ForkJoinWorkerThread.java:107)
+Caused by: java.io.FileNotFoundException: datasets/dating/ratings.csv (No such file or directory)
+	at java.io.FileInputStream.open(Native Method)
+	at java.io.FileInputStream.<init>(FileInputStream.java:146)
+	at scala.io.Source$.fromFile(Source.scala:90)
+	at scala.io.Source$.fromFile(Source.scala:75)
+	at scala.io.Source$.fromFile(Source.scala:53)
+	at com.bythebay.pipeline.akka.feeder.FeederActor.initData(FeederActor.scala:34)
+	at com.bythebay.pipeline.akka.feeder.FeederActor.<init>(FeederActor.scala:23)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:526)
+	at java.lang.Class.newInstance(Class.java:383)
+	at akka.util.Reflect$.instantiate(Reflect.scala:45)
+	at akka.actor.NoArgsReflectConstructor.produce(Props.scala:361)
+	at akka.actor.Props.newActor(Props.scala:252)
+	at akka.actor.ActorCell.newActor(ActorCell.scala:552)
+	at akka.actor.ActorCell.create(ActorCell.scala:578)
+	... 9 more
+
+[INFO] [08/05/2015 13:51:15.498] [MyActorSystem-akka.actor.default-dispatcher-2] [akka://MyActorSystem/user/feederActor] Message [com.bythebay.pipeline.akka.feeder.FeederActor$SendNextLine$] from Actor[akka://MyActorSystem/user/feederActor#-1629407598] to Actor[akka://MyActorSystem/user/feederActor#-1629407598] was not delivered. [1] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.
+[INFO] [08/05/2015 13:51:15.593] [MyActorSystem-akka.actor.default-dispatcher-3] [akka://MyActorSystem/user/feederActor] Message [com.bythebay.pipeline.akka.feeder.FeederActor$SendNextLine$] from Actor[akka://MyActorSystem/user/feederActor#-1629407598] to Actor[akka://MyActorSystem/user/feederActor#-1629407598] was not delivered. [2] dead letters encountered. This logging can be turned off or adjusted with configuration settings 'akka.log-dead-letters' and 'akka.log-dead-letters-during-shutdown'.

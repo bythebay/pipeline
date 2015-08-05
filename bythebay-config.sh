@@ -7,37 +7,12 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/authorized_keys
 chmod 600 ~/.ssh/id_rsa
 
-# Apache Httpd
-#echo ...Configuring Apache Httpd...
-#a2enmod proxy
-#a2enmod proxy_http
-#a2dissite 000-default
-#mv /etc/apache2/apache2.conf /etc/apache2/apache2.conf.orig
-#ln -s $PIPELINE_HOME/config/apache2/apache2.conf /etc/apache2
-
 # Datasets
 echo ...Decompressing Datasets...
 bzip2 -d -k datasets/dating/gender.json.bz2
 bzip2 -d -k datasets/dating/gender.csv.bz2
 bzip2 -d -k datasets/dating/ratings.json.bz2
 bzip2 -d -k datasets/dating/ratings.csv.bz2
-
-# Sample WebApp
-#echo ...Configuring Sample WebApp...
-#ln -s $PIPELINE_HOME/config/sparkafterdark/sparkafterdark.conf /etc/apache2/sites-available
-#a2ensite sparkafterdark
-#ln -s $PIPELINE_HOME/datasets $PIPELINE_HOME/html/sparkafterdark.com
-# Every parent of /html is required to serve up the html
-#chmod -R a+rx ~
-
-# Ganglia
-#echo ...Configuring Ganglia...
-#ln -s $PIPELINE_HOME/config/ganglia/ganglia.conf /etc/apache2/sites-available
-#a2ensite ganglia
-#mv /etc/ganglia/gmetad.conf /etc/ganglia/gmetad.conf.orig
-#mv /etc/ganglia/gmond.conf /etc/ganglia/gmond.conf.orig
-#ln -s $PIPELINE_HOME/config/ganglia/gmetad.conf /etc/ganglia
-#ln -s $PIPELINE_HOME/config/ganglia/gmond.conf /etc/ganglia
 
 # MySQL (Required by HiveQL Exercises)
 echo ...Configurating MySQL...
@@ -66,31 +41,6 @@ echo ...Configuring Kafka...
 
 # ZooKeeper
 echo ...Configuring ZooKeeper...
-
-# ElasticSearch
-#echo ...Configuring ElasticSearch...
-
-# Logstash
-#echo ...Configuring Logstash...
-
-# Kibana
-#echo ...Configuring Kibana...
-
-# Hadoop HDFS
-echo ...Configuring Hadoop HDFS...
-
-# Redis
-#echo ...Configuring Redis...
-
-# Tachyon
-#echo ...Configuring Tachyon...
-#ln -s $PIPELINE_HOME/config/tachyon/tachyon-env.sh $TACHYON_HOME/conf
-# The following command requies the SSH daemon to be running
-# If we switch to use HDFS as the underfs, we'll need the HDFS daemon to be running
-# We need to chmod the keys again - not sure why, but it works so let's keep it
-#chmod 600 ~/.ssh/authorized_keys
-#chmod 600 ~/.ssh/id_rsa
-#tachyon format
 
 # SBT
 echo ...Configuring SBT...

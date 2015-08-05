@@ -12,10 +12,6 @@ git reset --hard && git pull
 # Make the scripts executable
 chmod a+rx *.sh
 
-# Rebuild the pipeline
-rm -rf /root/.ivy2
-../sbt/bin/sbt clean clean-files package
-
 # Setup tools
 ./bythebay-config.sh
 
@@ -25,5 +21,3 @@ rm -rf /root/.ivy2
 # Initialize Kafka, Cassandra, Hive
 ./bythebay-create.sh
 
-# Stop the pipeline services
-./bythebay-stop.sh

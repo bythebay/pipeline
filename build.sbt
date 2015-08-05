@@ -1,4 +1,4 @@
-name := """FeedSimulator"""
+name := """RatingSimulator"""
 
 version := "1.0"
 
@@ -24,6 +24,6 @@ libraryDependencies ++= Seq(
   "org.apache.spark" % "spark-streaming-kafka_2.10" % sparkVersion 
 )
 
-mainClass in (Compile, run) := Some("com.fluxcapacitor.pipeline.akka.feeder.FeederMain")
-mainClass in (Compile, packageBin) := Some("com.fluxcapacitor.pipeline.akka.feeder.FeederMain")
+mainClass in (Compile, run) := Some("com.bythebay.pipeline.akka.feeder.FeederMain")
+mainClass in (Compile, packageBin) := Some("com.bythebay.pipeline.akka.feeder.FeederMain")
 
