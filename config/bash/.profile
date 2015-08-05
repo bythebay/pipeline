@@ -43,30 +43,6 @@ export PATH=$PATH:$KAFKA_HOME/bin
 export ZOOKEEPER_HOME=$KAFKA_HOME/bin
 export PATH=$PATH:$ZOOKEEPER_HOME/bin
 
-# ElasticSearch
-export ELASTICSEARCH_HOME=$DEV_INSTALL_HOME/elasticsearch-1.7.1
-export PATH=$PATH:$ELASTICSEARCH_HOME/bin
-
-# LogStash
-export LOGSTASH_HOME=$DEV_INSTALL_HOME/logstash-1.5.3
-export PATH=$PATH:$LOGSTASH_HOME/bin
-
-# Kibana
-export KIBANA_HOME=$DEV_INSTALL_HOME/kibana-4.1.1-linux-x64
-export PATH=$PATH:$KIBANA_HOME/bin
-
-# Hadoop HDFS
-export HADOOP_HOME=$DEV_INSTALL_HOME/hadoop-2.6.0
-export PATH=$PATH:$HADOOP_HOME/bin
-
-# Redis
-export REDIS_HOME=$DEV_INSTALL_HOME/redis-3.0.3
-export PATH=$PATH:$REDIS_HOME/bin
-
-# Tachyon
-export TACHYON_HOME=$DEV_INSTALL_HOME/tachyon-0.6.4
-export PATH=$PATH:$TACHYON_HOME/bin
-
 # SBT
 export SBT_HOME=$DEV_INSTALL_HOME/sbt
 export PATH=$PATH:$SBT_HOME/bin
