@@ -45,8 +45,7 @@ echo "VIRTUALBOX_MEMORY_SIZE = ${VIRTUALBOX_MEMORY_SIZE}"
 
 
 docker-machine create -d virtualbox pipelinebythebay
-echo "execute this after you run the script as well since it won't stay in your shell with this script."
-echo "# eval \$(docker-machine env pipelinebythebay)"
+
 
 eval $(docker-machine env pipelinebythebay)
 
@@ -76,3 +75,5 @@ echo "the ip address of your virtual machine is $(docker-machine ip pipelinebyth
 echo "if you want to copy prepare a usbstick"
 echo "rsync -r --delete --progress ../ /volumes/KINGSTON"
 
+echo "execute this after you run the script as well since it won't stay in your shell with this script."
+echo "# eval \$(docker-machine env pipelinebythebay)"
