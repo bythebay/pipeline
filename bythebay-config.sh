@@ -47,6 +47,7 @@ echo ...Configuring SBT...
 
 # Spark-Notebook
 echo ...Configuring Spark-Notebook...
+ln -s $PIPELINE_HOME/notebooks/spark-notebook/pipeline $SPARK_NOTEBOOK_HOME/notebooks
 
 # SSH (Part 2/2)
 echo ...Configuring SSH Part 2 of 2
