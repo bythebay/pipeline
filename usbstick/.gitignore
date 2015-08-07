@@ -1,10 +1,13 @@
-boot2docker.iso
+osx/.DS_Store
+osx/boot2docker.iso
+osx/docker-1.7.1
+# osx/docker-1.7.1.md5
 osx/docker-compose-Darwin-x86_64
+# osx/docker-compose-Darwin-x86_64.md5
 osx/docker-machine_darwin-amd64
-osx/docker-latest
-
-linux/docker-compose-Linux-x86_64
-
-Oracle_VM_VirtualBox_Extension_Pack-5.0.0-101573.vbox-extpack
+# osx/docker-machine_darwin-amd64.md5
+osx/Kitematic-0.8.0-rc4-Mac.zip
+osx/MD5SUMS.virtualbox
+osx/Oracle_VM_VirtualBox_Extension_Pack-5.0.0-101573.vbox-extpack
+osx/VirtualBox-5.0.0-101573-OSX.dmg
 pipelinebythebay.tar
-VirtualBox-5.0.0-101573-OSX.dmg
