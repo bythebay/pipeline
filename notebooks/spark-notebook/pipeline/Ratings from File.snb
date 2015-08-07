@@ -14,7 +14,13 @@
     "customDeps" : [ "com.datastax.spark:spark-cassandra-connector_2.10:1.4.0-M1", "org.elasticsearch:elasticsearch-spark_2.10:2.1.0", "org.apache.spark:spark-streaming-kafka-assembly_2.10:1.4.0", "org.apache.spark % spark-graphx_2.10 % 1.4.1", "- org.apache.spark % spark-core_2.10 % _", "- org.apache.spark % spark-streaming_2.10 % _", "- org.apache.hadoop % _ % _" ],
     "customImports" : null,
     "customSparkConf" : {
-      "spark.cassandra.connection.host" : "127.0.0.1"
+      "spark.cassandra.connection.host" : "127.0.0.1",
+      "spark.master" : "spark://127.0.0.1:7077",
+      "spark.executor.cores" : "1",
+      "spark.executor.memory" : "1024m",
+      "spark.cores.max" : "1",
+      "spark.eventLog.enabled" : "true",
+      "spark.eventLog.dir" : "logs/spark"
     }
   },
   "cells" : [ {
@@ -38,7 +44,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "val ratingsDF = sqlContext.read.format(\"json\").load(\"file:/root/pipeline/datasets/dating/ratings.json.bz2\")\n()",
@@ -47,7 +53,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : ":markdown\nThere are ${ratingsDF.count} ratings",
@@ -60,7 +66,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "widgets.TableChart(ratingsDF, maxPoints=25)",
@@ -77,7 +83,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "val edges = ratingsDF.rdd.zipWithIndex.map(r => Edge(r._2, (r._1.getLong(0), r._1.getLong(2)), r._1.getLong(1)))\nval nodes = edges.flatMap(e => List(e.ends._1, e.ends._2)).distinct.map(x => Node(x, \"\"))\n()",
@@ -90,7 +96,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "val gs = new java.io.Serializable {\n  val ed = edges.sample(false, 0.00001).collect.toList\n  val nd = ed.flatMap(e => List(e.ends._1, e.ends._2)).distinct.map(x => Node(x, \"\"))\n  @transient val allG = ed :::nd\n  @transient val plot = widgets.GraphChart(allG, maxPoints=allG.size)\n}.plot",
@@ -111,7 +117,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "val ft = ratingsDF.groupBy(\"fromUserId\").agg(count(\"toUserId\").as(\"cnt\")).orderBy($\"cnt\".desc)",
@@ -120,7 +126,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : ":markdown\nThere are actually ${ft.count} raters",
@@ -133,7 +139,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "widgets.LineChart(ft.select(\"cnt\").rdd.map(_.getLong(0)).take(100), fields=Some((\"X\", \"Y\")), maxPoints=100)",
@@ -150,7 +156,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "val genderDF = sqlContext.read.format(\"json\").load(\"file:/root/pipeline/datasets/dating/gender.json.bz2\")",
@@ -163,7 +169,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "val withGender = ft.join(genderDF, ft(\"fromUserId\") === genderDF(\"id\"))\ndef inG(g:String) = withGender.filter($\"gender\" === g).orderBy($\"cnt\".desc).select(\"cnt\").rdd.map(_.getLong(0)).take(100)\nval fems = inG(\"F\")\nval mals = inG(\"M\")\nval others = inG(\"U\")\n\nwidgets.LineChart(fems, fields=Some((\"X\", \"Y\")), maxPoints=100) ++ \n  widgets.LineChart(mals, fields=Some((\"X\", \"Y\")), maxPoints=100) ++ \n  widgets.LineChart(others, fields=Some((\"X\", \"Y\")), maxPoints=100)",
@@ -180,7 +186,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "import org.apache.spark.graphx.{Edge=>GEdge, _}\nval gnodes = nodes.map(_.id).toDF\nval xVertices = gnodes.join(genderDF, gnodes(\"_1\") === genderDF(\"id\")).select(gnodes(\"_1\"), genderDF(\"gender\")).map(r => (r.getLong(0), r.getString(1)))\nval xEdges = edges.map(e => org.apache.spark.graphx.Edge(e.ends._1, e.ends._2, e.value))\nval graph = Graph(xVertices, xEdges)",
@@ -193,7 +199,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "val pg = graph.ops.pageRank(0.001)",
@@ -206,7 +212,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "pg.vertices.take(10)",
@@ -219,7 +225,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "val pgv = pg.vertices.toDF\npgv.schema",
@@ -232,7 +238,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "val bestG = pgv.join(genderDF, pgv(\"_1\") === genderDF(\"id\"))\n\nimport notebook.front.third.wisp._\ndef bestGInG(g:String) = bestG.filter($\"gender\" === g).orderBy($\"_2\".desc).select($\"_2\").map(_.getDouble(0)).zipWithIndex.map(_.swap).take(1000).toList\nval bf = bestGInG(\"F\")\nval bm = bestGInG(\"M\")\nval bu = bestGInG(\"U\")\nPlot(Seq(Pairs(bf, \"line\"), Pairs(bm, \"line\"), Pairs(bu, \"line\")))",

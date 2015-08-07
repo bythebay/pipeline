@@ -15,6 +15,12 @@
     "customImports" : null,
     "customSparkConf" : {
       "spark.cassandra.connection.host" : "127.0.0.1",
+      "spark.master" : "spark://127.0.0.1:7077",
+      "spark.executor.cores" : "1",
+      "spark.executor.memory" : "512m",
+      "spark.cores.max" : "1",
+      "spark.eventLog.enabled" : "true",
+      "spark.eventLog.dir" : "logs/spark",
       "spark.scheduler.mode" : "FAIR"
     }
   },
@@ -26,18 +32,7 @@
     },
     "cell_type" : "code",
     "source" : "import org.apache.spark.sql._\nval sqlContext = new SQLContext(sparkContext)\nimport sqlContext.implicits._\nimport org.apache.spark.sql.functions._",
-    "outputs" : [ {
-      "name" : "stdout",
-      "output_type" : "stream",
-      "text" : "import org.apache.spark.sql._\nsqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@7942c94b\nimport sqlContext.implicits._\nimport org.apache.spark.sql.functions._\n"
-    }, {
-      "metadata" : { },
-      "data" : {
-        "text/html" : ""
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 1
-    } ]
+    "outputs" : [ ]
   }, {
     "metadata" : {
       "trusted" : true,
@@ -46,18 +41,7 @@
     },
     "cell_type" : "code",
     "source" : "case class Rating(fromUserId: Int, toUserId: Int, rating: Int) {\n  def toCSV=s\"$fromUserId,$rating,$toUserId\"\n}",
-    "outputs" : [ {
-      "name" : "stdout",
-      "output_type" : "stream",
-      "text" : "defined class Rating\n"
-    }, {
-      "metadata" : { },
-      "data" : {
-        "text/html" : ""
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 2
-    } ]
+    "outputs" : [ ]
   }, {
     "metadata" : {
       "trusted" : true,
@@ -66,18 +50,7 @@
     },
     "cell_type" : "code",
     "source" : "import java.util.Properties\n\nimport scala.concurrent.ExecutionContext.Implicits.global\nimport scala.concurrent.Future\n\nimport kafka.producer.{KeyedMessage, Producer, ProducerConfig}\n\nval props = new Properties()\nprops.put(\"metadata.broker.list\", \"localhost:9092,localhost:9093\")\nprops.put(\"serializer.class\", \"kafka.serializer.StringEncoder\")\nval producerConfig = new ProducerConfig(props)\nval producer = new Producer[String, String](producerConfig)\n\n// Guard to stop the producer\nvar stopSending = false\n\n// future that issues a future.\n// a future sends a message after having waited for up to 500ms\ndef sendMsg:Unit = Future {\n  Thread.sleep((scala.util.Random.nextDouble * 500).toLong)\n  producer.send {\n    val msg = Rating(scala.util.Random.nextInt(10000), scala.util.Random.nextInt(10), scala.util.Random.nextInt(10000))\n    new KeyedMessage[String, String](\"ratings\", msg.fromUserId.toString, msg.toCSV)\n  }\n  if (!stopSending) sendMsg\n}\nsendMsg",
-    "outputs" : [ {
-      "name" : "stdout",
-      "output_type" : "stream",
-      "text" : "import java.util.Properties\nimport scala.concurrent.ExecutionContext.Implicits.global\nimport scala.concurrent.Future\nimport kafka.producer.{KeyedMessage, Producer, ProducerConfig}\nprops: java.util.Properties = {metadata.broker.list=localhost:9092,localhost:9093, serializer.class=kafka.serializer.StringEncoder}\nproducerConfig: kafka.producer.ProducerConfig = kafka.producer.ProducerConfig@110d1c3c\nproducer: kafka.producer.Producer[String,String] = kafka.producer.Producer@73b8afe2\nstopSending: Boolean = false\nsendMsg: Unit\n"
-    }, {
-      "metadata" : { },
-      "data" : {
-        "text/html" : ""
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 3
-    } ]
+    "outputs" : [ ]
   }, {
     "metadata" : {
       "trusted" : true,
@@ -86,18 +59,7 @@
     },
     "cell_type" : "code",
     "source" : "import org.apache.spark.streaming.Seconds\nimport org.apache.spark.streaming.StreamingContext\n\nval ssc = new StreamingContext(sc, Seconds(2))\nval brokers = \"localhost:9092,localhost:9093\"\nval topics = Set(\"ratings\")\nval kafkaParams = Map[String, String](\"metadata.broker.list\" -> brokers)",
-    "outputs" : [ {
-      "name" : "stdout",
-      "output_type" : "stream",
-      "text" : "import org.apache.spark.streaming.Seconds\nimport org.apache.spark.streaming.StreamingContext\nssc: org.apache.spark.streaming.StreamingContext = org.apache.spark.streaming.StreamingContext@7c63a825\nbrokers: String = localhost:9092,localhost:9093\ntopics: scala.collection.immutable.Set[String] = Set(ratings)\nkafkaParams: scala.collection.immutable.Map[String,String] = Map(metadata.broker.list -> localhost:9092,localhost:9093)\n"
-    }, {
-      "metadata" : { },
-      "data" : {
-        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonafe4d6aa2a0b9426298254337365b3c8&quot;,&quot;dataInit&quot;:[{&quot;X&quot;:&quot;metadata.broker.list&quot;,&quot;Y&quot;:&quot;localhost:9092,localhost:9093&quot;}],&quot;genId&quot;:&quot;1200963370&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tabs'], \n      function(playground, _magictabs) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictabs,\n    \"o\": {}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    <div>\n        <ul class=\"nav nav-tabs\" id=\"ul1200963370\"><li>\n              <a href=\"#tab1200963370-0\"><i class=\"fa fa-table\"/></a>\n            </li><li>\n              <a href=\"#tab1200963370-1\"><i class=\"fa fa-pie-chart\"/></a>\n            </li></ul>\n\n        <div class=\"tab-content\" id=\"tab1200963370\"><div class=\"tab-pane\" id=\"tab1200963370-0\">\n            <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon72453017bb8f89e7b1f88fcffa36a5a3&quot;,&quot;dataInit&quot;:[{&quot;X&quot;:&quot;metadata.broker.list&quot;,&quot;Y&quot;:&quot;localhost:9092,localhost:9093&quot;}],&quot;genId&quot;:&quot;842079626&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tableChart'], \n      function(playground, _magictableChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictableChart,\n    \"o\": {\"headers\":[\"X\",\"Y\"],\"nrow\":1,\"shown\":1,\"width\":600,\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    </div>\n            </div><div class=\"tab-pane\" id=\"tab1200963370-1\">\n            <div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon2bb74e686dbfcc8fe71762a227fdc919&quot;,&quot;dataInit&quot;:[{&quot;X&quot;:&quot;metadata.broker.list&quot;,&quot;Y&quot;:&quot;localhost:9092,localhost:9093&quot;}],&quot;genId&quot;:&quot;1744450177&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/pieChart'], \n      function(playground, _magicpieChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magicpieChart,\n    \"o\": {\"series\":\"X\",\"p\":\"Y\",\"width\":600,\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    </div>\n            </div></div>\n      </div></div>"
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 4
-    } ]
+    "outputs" : [ ]
   }, {
     "metadata" : {
       "trusted" : true,
@@ -106,18 +68,7 @@
     },
     "cell_type" : "code",
     "source" : "import org.apache.spark.streaming.kafka.KafkaUtils\nimport org.apache.spark.streaming.Time\nimport kafka.serializer.StringDecoder\n\n// connect (direct) to kafka\nval ratingsStream = KafkaUtils.createDirectStream[String, String, StringDecoder, StringDecoder](\n  ssc, kafkaParams, topics)\n\n// transform the CSV Strings into Ratings\nval msgs = ratingsStream.foreachRDD { (message: RDD[(String, String)], batchTime: Time) => \n  // convert each RDD from the batch into a DataFrame\n  val df = message.map(_._2.split(\",\"))\n                  .map(rating => \n                       Rating(rating(0).trim.toInt, rating(1).trim.toInt, rating(2).trim.toInt)\n                  ).toDF(\"fromuserid\", \"touserid\", \"rating\")\n\n  // add the batch time to the DataFrame\n  val dfWithBatchTime = df.withColumn(\"batchtime\", org.apache.spark.sql.functions.lit(batchTime.milliseconds))\n\n  // save the DataFrame to Cassandra\n  // Note:  Cassandra has been initialized through spark-env.sh\n  //        Specifically, export SPARK_JAVA_OPTS=-Dspark.cassandra.connection.host=127.0.0.1\n  dfWithBatchTime.write.format(\"org.apache.spark.sql.cassandra\")\n    .mode(SaveMode.Append)\n    .options(Map(\"keyspace\" -> \"pipeline\", \"table\" -> \"real_time_ratings\"))\n    .save()\n}",
-    "outputs" : [ {
-      "name" : "stdout",
-      "output_type" : "stream",
-      "text" : "import org.apache.spark.streaming.kafka.KafkaUtils\nimport org.apache.spark.streaming.Time\nimport kafka.serializer.StringDecoder\nratingsStream: org.apache.spark.streaming.dstream.InputDStream[(String, String)] = org.apache.spark.streaming.kafka.DirectKafkaInputDStream@66aed573\nmsgs: Unit = ()\n"
-    }, {
-      "metadata" : { },
-      "data" : {
-        "text/html" : ""
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 5
-    } ]
+    "outputs" : [ ]
   }, {
     "metadata" : {
       "trusted" : true,
@@ -126,19 +77,12 @@
     },
     "cell_type" : "code",
     "source" : "ssc.start()",
-    "outputs" : [ {
-      "metadata" : { },
-      "data" : {
-        "text/html" : ""
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 6
-    } ]
+    "outputs" : [ ]
   }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "",
@@ -151,18 +95,7 @@
     },
     "cell_type" : "code",
     "source" : "val genderDF = sqlContext.read.format(\"json\").load(\"file:/root/pipeline/datasets/dating/gender.json.bz2\")",
-    "outputs" : [ {
-      "name" : "stdout",
-      "output_type" : "stream",
-      "text" : "genderDF: org.apache.spark.sql.DataFrame = [gender: string, id: bigint]\n"
-    }, {
-      "metadata" : { },
-      "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon85ec568dc6f9bc167c2974e6d580945e&quot;,&quot;partitionIndexId&quot;:&quot;anon842a3a5c98884dd0b9bead68dbbe7907&quot;,&quot;numPartitions&quot;:8839,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;gender&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;id&quot;,&quot;type&quot;:&quot;long&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 7
-    } ]
+    "outputs" : [ ]
   }, {
     "metadata" : {
       "trusted" : true,
@@ -170,19 +103,8 @@
       "collapsed" : false
     },
     "cell_type" : "code",
-    "source" : "import notebook.front.third.wisp._\nimport com.quantifind.charts.highcharts._\nimport com.quantifind.charts.highcharts.Highchart._\n\ndef scopeBox(gender:String, column:String) = new java.io.Serializable {\n  @transient val sqc = sqlContext\n  \n  val ratingsC = sqc\n                  .read\n                  .format(\"org.apache.spark.sql.cassandra\")\n                  .options(Map( \"table\" -> \"real_time_ratings\", \"keyspace\" -> \"pipeline\"))\n                  .load()// This DataFrame will use a spark.cassandra.input.size of 5000\n\n  val ratingColumn = column\n  \n  val sumRatings = ratingsC.groupBy($\"touserid\").agg(Map(ratingColumn -> \"sum\")).withColumnRenamed(\"touserid\", \"id\")\n\n  val males = sumRatings.join(genderDF, sumRatings(\"id\") === genderDF(\"id\"))\n                          .filter($\"gender\" === gender)\n                          .orderBy(sumRatings(\"SUM(\"+ratingColumn+\")\").asc)\n                          .select(sumRatings(\"SUM(\"+ratingColumn+\")\"))\n                          .map(row => (row.getLong(0)))\n                          .zipWithIndex\n\n  val count = males.count\n  val min = males.min._1\n  val max = males.max._1\n  val qs = males.filter(x => \n                        x._2 == (count * 0.25).toInt || \n                        x._2 == (count * 0.50).toInt || \n                        x._2 == (count * 0.75).toInt\n                       ).collect().toList\n\n\n  val (q1:Long, _)::(med:Long, _)::(q3:Long, _)::_ = qs\n  \n  @transient val box = BoxplotData(None, min, q1, med, q3, max)\n}",
-    "outputs" : [ {
-      "name" : "stdout",
-      "output_type" : "stream",
-      "text" : "import notebook.front.third.wisp._\nimport com.quantifind.charts.highcharts._\nimport com.quantifind.charts.highcharts.Highchart._\nscopeBox: (gender: String)java.io.Serializable{val sqc: org.apache.spark.sql.SQLContext; val ratingsC: org.apache.spark.sql.DataFrame; val ratingColumn: String; val sumRatings: org.apache.spark.sql.DataFrame; val males: org.apache.spark.rdd.RDD[(Long, Long)]; val count: Long; val min: Long; val max: Long; val qs: List[(Long, Long)]; val q1: Long; val med: Long; val q3: Long; val box: com.quantifind.charts.highcharts.BoxplotData[Long]}\n"
-    }, {
-      "metadata" : { },
-      "data" : {
-        "text/html" : ""
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 10
-    } ]
+    "source" : "def scopeBox(gender:String, column:String) = new java.io.Serializable {\n  @transient val sqc = sqlContext\n  \n  val ratingsC = sqc\n                  .read\n                  .format(\"org.apache.spark.sql.cassandra\")\n                  .options(Map( \"table\" -> \"real_time_ratings\", \"keyspace\" -> \"pipeline\"))\n                  .load()// This DataFrame will use a spark.cassandra.input.size of 5000\n\n  val ratingColumn = column\n  \n  val sumRatings = ratingsC.groupBy($\"touserid\").agg(Map(ratingColumn -> \"sum\")).withColumnRenamed(\"touserid\", \"id\")\n\n  val males = sumRatings.join(genderDF, sumRatings(\"id\") === genderDF(\"id\"))\n                          .filter($\"gender\" === gender)\n                          .orderBy(sumRatings(\"SUM(\"+ratingColumn+\")\").asc)\n                          .select(sumRatings(\"SUM(\"+ratingColumn+\")\"))\n                          .map(row => (row.getLong(0)))\n                          .zipWithIndex\n\n  val count = males.count\n  val min = males.min._1\n  val max = males.max._1\n  val qs = males.filter(x => \n                        x._2 == (count * 0.25).toInt || \n                        x._2 == (count * 0.50).toInt || \n                        x._2 == (count * 0.75).toInt\n                       ).collect().toList\n\n\n  val (q1:Long, _)::(med:Long, _)::(q3:Long, _)::_ = qs\n}",
+    "outputs" : [ ]
   }, {
     "metadata" : {
       "trusted" : true,
@@ -190,19 +112,8 @@
       "collapsed" : false
     },
     "cell_type" : "code",
-    "source" : "val column = \"batchtime\" // crap thingy here, cassandra seems to mess at write time rating and batchtime\nval series =  Series(\n                Seq(scopeBox(\"M\", column).box, scopeBox(\"F\", column).box, scopeBox(\"U\", column).box), \n                chart=Some(SeriesType.boxplot)\n              )\nval plot = PlotH(Highchart(series))",
-    "outputs" : [ {
-      "name" : "stdout",
-      "output_type" : "stream",
-      "text" : "warning: there were 3 feature warning(s); re-run with -feature for details\nseries: com.quantifind.charts.highcharts.Series = Series(List(BoxplotData(None,0,2,5,8,27), BoxplotData(None,0,3,5,8,25), BoxplotData(None,0,3,5,8,19)),None,None,None,Some(boxplot),None,None,None,None,series)\nplot: notebook.front.third.wisp.PlotH = <PlotH widget>\n"
-    }, {
-      "metadata" : { },
-      "data" : {
-        "text/html" : "<div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon451dee954b893092297fa6fd1714732d&quot;,&quot;dataInit&quot;:[{&quot;series&quot;:[{&quot;data&quot;:[{&quot;low&quot;:0,&quot;median&quot;:5,&quot;q3&quot;:8,&quot;q1&quot;:2,&quot;high&quot;:27},{&quot;low&quot;:0,&quot;median&quot;:5,&quot;q3&quot;:8,&quot;q1&quot;:3,&quot;high&quot;:25},{&quot;low&quot;:0,&quot;median&quot;:5,&quot;q3&quot;:8,&quot;q1&quot;:3,&quot;high&quot;:19}],&quot;type&quot;:&quot;boxplot&quot;}],&quot;exporting&quot;:{&quot;filename&quot;:&quot;chart&quot;},&quot;yAxis&quot;:[{&quot;title&quot;:{&quot;text&quot;:&quot;&quot;}}],&quot;plotOptions&quot;:{&quot;boxplot&quot;:{&quot;turboThreshold&quot;:0}},&quot;credits&quot;:{&quot;href&quot;:&quot;&quot;,&quot;text&quot;:&quot;&quot;},&quot;chart&quot;:{&quot;zoomType&quot;:&quot;xy&quot;},&quot;title&quot;:{&quot;text&quot;:&quot;&quot;},&quot;xAxis&quot;:[{&quot;title&quot;:{&quot;text&quot;:&quot;&quot;}}]}],&quot;genId&quot;:&quot;803317111&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/wispWrap'], \n      function(playground, _wispWrap) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _wispWrap,\n    \"o\": {\"width\":600,\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    </div>"
-      },
-      "output_type" : "execute_result",
-      "execution_count" : 11
-    } ]
+    "source" : "import notebook.front.third.wisp._\nimport com.quantifind.charts.highcharts.Highchart._\nimport com.quantifind.charts.highcharts._\n\nval column = \"batchtime\" // crap thingy here, cassandra seems to mess at write time rating and batchtime\n\nval f =  { \n val b = scopeBox(\"F\", column)\n Data(b.min, b.q1, b.med, b.q3, b.max)\n }\nval m =  { \n val b = scopeBox(\"M\", column)\n Data(b.min, b.q1, b.med, b.q3, b.max)\n }\nval u =  { \n val b = scopeBox(\"U\", column)\n Data(b.min, b.q1, b.med, b.q3, b.max)\n }\nval series =  Series(\n               Seq(f, m, u), \n               chart=Some(SeriesType.boxplot)\n             )\nval plot = PlotH(Highchart(series, \n                           title=Some(Title(\"Boxplots of rating distributions within Gender\")),\n                           xAxis=Some(Array(Axis(categories=Some(Array(\"Female\", \"Male\", \"Unknown\")))))\n                          )\n                )",
+    "outputs" : [ ]
   } ],
   "nbformat" : 4
 }

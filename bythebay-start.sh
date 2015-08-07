@@ -28,14 +28,11 @@ nohup zookeeper-server-start $PIPELINE_HOME/config/kafka/zookeeper.properties &
 echo ...Starting Kafka...
 nohup kafka-server-start $PIPELINE_HOME/config/kafka/server.properties &
 
-echo ...Starting Zeppelin...
-nohup $ZEPPELIN_HOME/bin/zeppelin-daemon.sh start
-
 echo ...Starting Spark Master...
-nohup $SPARK_HOME/sbin/start-master.sh --webui-port 6060 -i 127.0.0.1 -h 127.0.0.1 
+nohup $SPARK_HOME/sbin/start-master.sh --webui-port 6060 -i 127.0.0.1 -h 127.0.0.1
 
 echo ...Starting Spark Worker...
-nohup $SPARK_HOME/sbin/start-slave.sh --webui-port 6061 spark://127.0.0.1:7077 
+nohup $SPARK_HOME/sbin/start-slave.sh --webui-port 6061 spark://127.0.0.1:7077
 
 echo ...Starting Apache Spark JDBC ODBC Hive ThriftServer...
 ## MySql must be started - and the password set - before ThriftServer will startup
@@ -45,7 +42,7 @@ nohup $SPARK_HOME/sbin/start-thriftserver.sh --jars $MYSQL_CONNECTOR_JAR --maste
 
 #echo ...Starting Tachyon...
 #nohup tachyon format
-#nohup $TACHYON_HOME/bin/tachyon-start.sh local   
+#nohup $TACHYON_HOME/bin/tachyon-start.sh local
 
 echo ...Starting Spark Notebook...
 screen  -m -d -S "snb" bash -c 'source ~/pipeline/config/bash/.profile && spark-notebook -Dconfig.file=$PIPELINE_HOME/config/spark-notebook/application-pipeline.conf >> nohup.out'

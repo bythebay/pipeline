@@ -45,14 +45,6 @@ echo ...Configuring ZooKeeper...
 # SBT
 echo ...Configuring SBT...
 
-# Zeppelin
-echo ...Configuring Zeppelin...
-ln -s $PIPELINE_HOME/config/zeppelin/zeppelin-env.sh $ZEPPELIN_HOME/conf
-ln -s $PIPELINE_HOME/config/zeppelin/zeppelin-site.xml $ZEPPELIN_HOME/conf
-ln -s $PIPELINE_HOME/config/zeppelin/interpreter.json $ZEPPELIN_HOME/conf
-ln -s $PIPELINE_HOME/config/hadoop/hive-site.xml $ZEPPELIN_HOME/conf
-ln -s $MYSQL_CONNECTOR_JAR $ZEPPELIN_HOME/lib
-
 # Spark-Notebook
 echo ...Configuring Spark-Notebook...
 

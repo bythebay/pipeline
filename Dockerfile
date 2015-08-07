@@ -64,11 +64,6 @@ RUN \
  && tar xvzf spark-1.4.1-bin-fluxcapacitor.tgz \
  && rm spark-1.4.1-bin-fluxcapacitor.tgz \
 
-# Apache Zeppelin
- && wget https://s3.amazonaws.com/fluxcapacitor.com/packages/zeppelin-0.5.1-spark-1.4.1-hadoop-2.6.0-fluxcapacitor.tar.gz \
- && tar xvzf zeppelin-0.5.1-spark-1.4.1-hadoop-2.6.0-fluxcapacitor.tar.gz \
- && rm zeppelin-0.5.1-spark-1.4.1-hadoop-2.6.0-fluxcapacitor.tar.gz \
-
 # Spark Notebook
  && apt-get install -y screen \
  && wget https://s3.amazonaws.com/fluxcapacitor.com/packages/spark-notebook-0.6.0-scala-2.10.4-spark-1.4.1-hadoop-2.6.0-with-hive-with-parquet.tgz \
