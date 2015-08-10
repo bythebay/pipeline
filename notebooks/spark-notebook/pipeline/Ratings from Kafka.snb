@@ -39,11 +39,7 @@
   }, {
     "metadata" : { },
     "cell_type" : "markdown",
-    "source" : "# Streaming: Kafka"
-  }, {
-    "metadata" : { },
-    "cell_type" : "markdown",
-    "source" : "Creating the domain object"
+    "source" : "## Creating the domain object"
   }, {
     "metadata" : {
       "trusted" : true,
@@ -56,12 +52,20 @@
   }, {
     "metadata" : { },
     "cell_type" : "markdown",
+    "source" : "# Streaming: Kafka"
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "<span style=\"font-size:15pt;color:red;\">(**NOT** needed if _feeder_ is running)</span>"
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
     "source" : "## Kafka Producer"
   }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : false
+      "collapsed" : true
     },
     "cell_type" : "code",
     "source" : "import java.util.Properties\n\nimport scala.concurrent.ExecutionContext.Implicits.global\nimport scala.concurrent.Future\n\nimport kafka.producer.{KeyedMessage, Producer, ProducerConfig}\n\nval props = new Properties()\nprops.put(\"metadata.broker.list\", \"localhost:9092,localhost:9093\")\nprops.put(\"serializer.class\", \"kafka.serializer.StringEncoder\")\nval producerConfig = new ProducerConfig(props)\nval producer = new Producer[String, String](producerConfig)\n\n// Guard to stop the producer\nvar stopSending = false\n\n// future that issues a future.\n// a future sends a message after having waited for up to 500ms\ndef sendMsg:Unit = Future {\n  Thread.sleep((scala.util.Random.nextDouble * 500).toLong)\n  producer.send {\n    val msg = Rating(scala.util.Random.nextInt(10000), scala.util.Random.nextInt(10), scala.util.Random.nextInt(10000))\n    new KeyedMessage[String, String](\"ratings\", msg.fromUserId.toString, msg.toCSV)\n  }\n  if (!stopSending) sendMsg\n}\nsendMsg",
@@ -69,7 +73,7 @@
   }, {
     "metadata" : { },
     "cell_type" : "markdown",
-    "source" : "## Viz"
+    "source" : "# Viz"
   }, {
     "metadata" : { },
     "cell_type" : "markdown",
@@ -99,7 +103,7 @@
   }, {
     "metadata" : { },
     "cell_type" : "markdown",
-    "source" : "## Spark Streaming"
+    "source" : "# Spark Streaming consuming Kafka"
   }, {
     "metadata" : { },
     "cell_type" : "markdown",
@@ -151,7 +155,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : false
+      "collapsed" : true
     },
     "cell_type" : "code",
     "source" : "//ssc.stop(false) // commented in case of a Run All ^^",
@@ -164,7 +168,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : false
+      "collapsed" : true
     },
     "cell_type" : "code",
     "source" : "//stopSending = true // commented in case of a Run All ^^",
