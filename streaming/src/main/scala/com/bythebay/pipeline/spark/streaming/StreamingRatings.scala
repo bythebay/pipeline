@@ -41,7 +41,7 @@ object StreamingRatings {
     ratingsStream.foreachRDD {
       (message: RDD[(String, String)], batchTime: Time) => {
         // convert each RDD from the batch into a DataFrame
-        val df = message.map(_._2.split(",")).map(rating => Rating(rating(0).trim.toInt, rating(1).trim.toInt, rating(2).trim.toInt, org.apache.spark.sql.functions.lit(batchTime.milliseconds))).toDF("fromuserid", "touserid", "rating")
+        val df = message.map(_._2.split(",")).map(rating => Rating(rating(0).trim.toInt, rating(1).trim.toInt, rating(2).trim.toInt, batchTime.milliseconds)).toDF("fromuserid", "touserid", "rating")
 
         // add the batch time to the DataFrame
         //val dfWithBatchTime = df.withColumn("batchtime", org.apache.spark.sql.functions.lit(batchTime.milliseconds))
