@@ -46,7 +46,7 @@ object StreamingRatings {
         // save the DataFrame to Cassandra
         // Note:  Cassandra has been initialized through spark-env.sh
         //        Specifically, export SPARK_JAVA_OPTS=-Dspark.cassandra.connection.host=127.0.0.1
-        dfWithBatchTime.write.format("org.apache.spark.sql.cassandra")
+        df.write.format("org.apache.spark.sql.cassandra")
           .mode(SaveMode.Append)
           .options(Map("keyspace" -> "pipeline", "table" -> "real_time_ratings"))
           .save()
