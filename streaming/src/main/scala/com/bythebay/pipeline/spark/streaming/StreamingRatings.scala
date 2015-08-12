@@ -12,13 +12,13 @@ import org.apache.spark.sql.Row
 import org.apache.spark.rdd.RDD
 import org.apache.spark.streaming.Time
 
-case class Rating(fromUserId: Int, toUserId: Int, rating: Int)
+case class Rating(fromUserId: Int, toUserId: Int, rating: Int, batchtime:Long)
 
 object StreamingRatings {
   def main(args: Array[String]) {
     val conf = new SparkConf()
       .set("spark.cassandra.connection.host", "127.0.0.1")
-    
+
     val sc = SparkContext.getOrCreate(conf)
 
     def createStreamingContext(): StreamingContext = {
@@ -27,11 +27,11 @@ object StreamingRatings {
 
       newSsc
     }
-    val ssc = StreamingContext.getActiveOrCreate(createStreamingContext) 
-   
+    val ssc = StreamingContext.getActiveOrCreate(createStreamingContext)
+
     val sqlContext = SQLContext.getOrCreate(sc)
-    import sqlContext.implicits._    
-    
+    import sqlContext.implicits._
+
     val brokers = "localhost:9092,localhost:9093"
     val topics = Set("ratings")
     val kafkaParams = Map[String, String]("metadata.broker.list" -> brokers)
@@ -41,11 +41,11 @@ object StreamingRatings {
     ratingsStream.foreachRDD {
       (message: RDD[(String, String)], batchTime: Time) => {
         // convert each RDD from the batch into a DataFrame
-        val df = message.map(_._2.split(",")).map(rating => Rating(rating(0).trim.toInt, rating(1).trim.toInt, rating(2).trim.toInt)).toDF("fromuserid", "touserid", "rating")
-      
+        val df = message.map(_._2.split(",")).map(rating => Rating(rating(0).trim.toInt, rating(1).trim.toInt, rating(2).trim.toInt, org.apache.spark.sql.functions.lit(batchTime.milliseconds))).toDF("fromuserid", "touserid", "rating")
+
         // add the batch time to the DataFrame
-        val dfWithBatchTime = df.withColumn("batch_time", org.apache.spark.sql.functions.lit(batchTime.milliseconds))
-      
+        //val dfWithBatchTime = df.withColumn("batchtime", org.apache.spark.sql.functions.lit(batchTime.milliseconds))
+
         // save the DataFrame to Cassandra
         // Note:  Cassandra has been initialized through spark-env.sh
         //        Specifically, export SPARK_JAVA_OPTS=-Dspark.cassandra.connection.host=127.0.0.1
