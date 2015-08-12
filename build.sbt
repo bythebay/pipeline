@@ -15,7 +15,7 @@ lazy val streaming = (project in file("streaming"))
 
 val akkaVersion = "2.3.11"
 val sparkVersion = "1.4.1"
-val sparkCassandraConnectorVersion = "1.4.0-M2"
+val sparkCassandraConnectorVersion = "1.4.0-M3
 val kafkaVersion = "0.8.2.1"
 val scalaTestVersion = "2.2.4"
 
