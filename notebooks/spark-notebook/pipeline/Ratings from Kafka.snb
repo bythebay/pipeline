@@ -65,10 +65,10 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
-    "source" : "import java.util.Properties\n\nimport scala.concurrent.ExecutionContext.Implicits.global\nimport scala.concurrent.Future\n\nimport kafka.producer.{KeyedMessage, Producer, ProducerConfig}\n\nval props = new Properties()\nprops.put(\"metadata.broker.list\", \"localhost:9092,localhost:9093\")\nprops.put(\"serializer.class\", \"kafka.serializer.StringEncoder\")\nval producerConfig = new ProducerConfig(props)\nval producer = new Producer[String, String](producerConfig)\n\n// Guard to stop the producer\nvar stopSending = false\n\n// future that issues a future.\n// a future sends a message after having waited for up to 500ms\ndef sendMsg:Unit = Future {\n  Thread.sleep((scala.util.Random.nextDouble * 500).toLong)\n  producer.send {\n    val msg = Rating(scala.util.Random.nextInt(10000), scala.util.Random.nextInt(10), scala.util.Random.nextInt(10000))\n    new KeyedMessage[String, String](\"ratings\", msg.fromUserId.toString, msg.toCSV)\n  }\n  if (!stopSending) sendMsg\n}\nsendMsg",
+    "source" : "import java.util.Properties\n\nimport scala.concurrent.ExecutionContext.Implicits.global\nimport scala.concurrent.Future\n\nimport org.apache.kafka.clients.producer.{KafkaProducer,ProducerConfig,ProducerRecord}\n\nval props = new Properties()\nprops.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, \"localhost:9092,localhost:9093\")\nprops.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, \"org.apache.kafka.common.serialization.StringSerializer\")\nprops.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, \"org.apache.kafka.common.serialization.StringSerializer\")\nval producer = new KafkaProducer[String, String](props)\n\n// Guard to stop the producer\nvar stopSending = false\n\n// future that issues a future.\n// a future sends a message after having waited for up to 500ms\ndef sendMsg:Unit = Future {\n  Thread.sleep((scala.util.Random.nextDouble * 500).toLong)\n  producer.send {\n    val msg = Rating(scala.util.Random.nextInt(10000), scala.util.Random.nextInt(10), scala.util.Random.nextInt(10000))\n    new ProducerRecord[String, String](\"ratings\", msg.fromUserId.toString, msg.toCSV)\n  }\n  if (!stopSending) sendMsg\n}\nsendMsg",
     "outputs" : [ ]
   }, {
     "metadata" : { },
@@ -155,7 +155,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "//ssc.stop(false) // commented in case of a Run All ^^",
@@ -168,10 +168,19 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "//stopSending = true // commented in case of a Run All ^^",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true
+    },
+    "cell_type" : "code",
+    "source" : "",
     "outputs" : [ ]
   } ],
   "nbformat" : 4
