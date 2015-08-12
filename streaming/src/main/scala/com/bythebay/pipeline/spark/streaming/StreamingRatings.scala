@@ -41,9 +41,10 @@ object StreamingRatings {
     ratingsStream.foreachRDD {
       (message: RDD[(String, String)], batchTime: Time) => {
         // convert each RDD from the batch into a DataFrame
-        val df = message.map(_._2.split(",")).map(rating => Rating(rating(0).trim.toInt, rating(1).trim.toInt, rating(2).trim.toInt, batchTime.milliseconds)).toDF("fromuserid", "touserid", "batchtime", "rating")
+        val df = message.map(_._2.split(",")).map(rating => Rating(rating(0).trim.toInt, rating(1).trim.toInt, batchTime.milliseconds, rating(2).trim.toInt)).toDF("fromuserid", "touserid", "batchtime", "rating")
 
-        df.show()
+        // this can be used to debug dataframes
+        // df.show()
 
         // save the DataFrame to Cassandra
         // Note:  Cassandra has been initialized through spark-env.sh

@@ -33,5 +33,6 @@ lazy val streamingDeps = Seq(
   "com.datastax.spark" % "spark-cassandra-connector_2.10" % sparkCassandraConnectorVersion,
   "org.apache.spark"  %% "spark-sql"             % sparkVersion % "provided",
   "org.apache.spark"  %% "spark-streaming"       % sparkVersion % "provided",
-  "org.apache.spark"  %% "spark-streaming-kafka" % sparkVersion % "provided"
+  "org.apache.spark"  %% "spark-streaming-kafka" % sparkVersion % "provided",
+  "com.databricks"    %% "spark-csv"             % "1.2.0"
 )
