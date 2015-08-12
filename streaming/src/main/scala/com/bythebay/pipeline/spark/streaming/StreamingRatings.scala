@@ -12,7 +12,7 @@ import org.apache.spark.sql.Row
 import org.apache.spark.rdd.RDD
 import org.apache.spark.streaming.Time
 
-case class Rating(fromUserId: Int, toUserId: Int, rating: Int, batchtime:Long)
+case class Rating(fromUserId: Int, toUserId: Int, batchtime:Long, rating: Int)
 
 object StreamingRatings {
   def main(args: Array[String]) {
@@ -41,7 +41,9 @@ object StreamingRatings {
     ratingsStream.foreachRDD {
       (message: RDD[(String, String)], batchTime: Time) => {
         // convert each RDD from the batch into a DataFrame
-        val df = message.map(_._2.split(",")).map(rating => Rating(rating(0).trim.toInt, rating(1).trim.toInt, rating(2).trim.toInt, batchTime.milliseconds)).toDF("fromuserid", "touserid", "rating", "batchtime")
+        val df = message.map(_._2.split(",")).map(rating => Rating(rating(0).trim.toInt, rating(1).trim.toInt, rating(2).trim.toInt, batchTime.milliseconds)).toDF("fromuserid", "touserid", "batchtime", "rating")
+
+        df.show()
 
         // save the DataFrame to Cassandra
         // Note:  Cassandra has been initialized through spark-env.sh
