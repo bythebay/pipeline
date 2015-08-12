@@ -12,7 +12,7 @@ import org.apache.spark.sql.Row
 import org.apache.spark.rdd.RDD
 import org.apache.spark.streaming.Time
 
-case class Rating(fromuserid: Int, touserid: Int, rating: Int, batchtime:Long)
+case class Rating(fromUserId: Int, toUserId: Int, rating: Int, batchtime:Long)
 
 object StreamingRatings {
   def main(args: Array[String]) {
