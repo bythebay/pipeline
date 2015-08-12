@@ -34,5 +34,5 @@ lazy val streamingDeps = Seq(
   "org.apache.spark"  %% "spark-sql"             % sparkVersion % "provided",
   "org.apache.spark"  %% "spark-streaming"       % sparkVersion % "provided",
   "org.apache.spark"  %% "spark-streaming-kafka" % sparkVersion % "provided",
-  "com.databricks"    %% "spark-csv"             % "2.0"
+  "com.databricks"    %% "spark-csv"             % "1.2.0"
 )
