@@ -17,6 +17,7 @@ dist
 /project/*-shim.sbt
 *.class
 derby.log
+nohup.out
 metastore
 .DS_Store
 init.d
