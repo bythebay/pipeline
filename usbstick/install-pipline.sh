@@ -39,6 +39,10 @@ VIRTUALBOX_MEMORY_SIZE="5120"
 export VIRTUALBOX_MEMORY_SIZE
 echo "VIRTUALBOX_MEMORY_SIZE = ${VIRTUALBOX_MEMORY_SIZE}"
 
+VIRTUALBOX_CPU_COUNT="4"
+export VIRTUALBOX_CPU_COUNT
+echo "VIRTUALBOX_CPU_COUNT = ${VIRTUALBOX_CPU_COUNT}"
+
 
 docker-machine create -d virtualbox pipelinebythebay 2>/dev/null|| echo "Sweet! you already have a pipelinebythebay docker-machine!"
 eval $(docker-machine env pipelinebythebay)

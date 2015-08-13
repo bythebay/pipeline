@@ -11,11 +11,13 @@ A quick note:  The paths to everything are relative.  This means you should be i
 
 ```sh
 docker pull bythebay/pipeline
-docker save bythebay/pipeline > pipelinebythebay.tar
+docker save aeab7cca3c8c > pipelinebythebay.tar
 ```
 
 
 #Install docker locally using usbstick
+If you do not have virtualbox installed already it should be on the usbstick.  Please install that first so you don't need to download it from the internet as bandwidth is limited.
+
 ##OSX
 Run this pkg 
 
@@ -37,6 +39,21 @@ After the script creates a docker-machine called pipelinebythebay with 5gb of ra
 eval "$(docker-machine env pipelinebythebay)"
 ```
 
+If you need the external IP address of your docker-machine to access services on it you can use this command.
+
+```sh
+docker-machine ip pipelinebythebay
+```
+
+Another example of using it in a script might be.  Since I have a bash alias to open chrome. 
+
+```sh
+alias openchrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --kiosk'
+openchrome http://$(docker-machine ip pipelinebythebay):
+# or 
+
+$(docker-machine ip pipelinebythebay)
+```
 
 ###Of note
 
