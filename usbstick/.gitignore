@@ -15,3 +15,5 @@ pipelinebythebay.tar
 windows/DockerToolbox-1.8.0a.exe
 bythebay-pipeline-old.ova
 bythebay-pipeline.ova
+docker-compose.yml
+notebooks
