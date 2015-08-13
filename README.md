@@ -15,8 +15,7 @@ You need to be able to run Docker containers, which probably means a virtual mac
 
 ### Method 1: Install using Docker Toolbox
 
-* Install Docker and Docker Toolbox ([MacOSX Instructions](http://docs.docker.com/mac/step_one/))
-* Follow [this README](usbstick/README.md) in the `usbstick/` folder.
+* Follow [this README](usbstick/README.md) in the `usbstick/` folder.  It will download all of the things needed to install Docker, Docker Toolbox, and get your environment up and running on OSX.
 
 ### Method 2: Install from OVA
 
