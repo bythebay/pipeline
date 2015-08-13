@@ -1,6 +1,8 @@
 #UsbStick Builder
 
 ##Prep the stick or just download dependencies
+A quick note:  The paths to everything are relative.  This means you should be inside the 'usbstick' folder when executing any of the scripts.
+
 
 1. run ```./download-deps.sh```
 2. copy the folder usbstick onto usbstick
