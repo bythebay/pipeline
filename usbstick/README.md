@@ -1,6 +1,6 @@
 #UsbStick Builder
 
-##Prep the stick
+##Prep the stick or just download dependencies
 
 1. run ```./download-deps.sh```
 2. copy the folder usbstick onto usbstick
@@ -39,6 +39,15 @@ eval "$(docker-machine env pipelinebythebay)"
 ###Of note
 
 The installer will work offline but will throw an error at the end.
+
+##VPN USERs
+
+There is a known issue with the cisco anyconnect client screwing up the networking in virtualbox.  The workaround that has worked best for me is to use openconnect instead of anyconnect.  There is a brew formula for openconnect.  ``` brew install openconnect ```
+openconnect requires that you have the [OSX tap/tun](http://tuntaposx.sourceforge.net/) driver installed beforehand.
+
+[Install openconnect instructions](https://gist.github.com/moklett/3170636)
+
+
 
 
 ##Windows
