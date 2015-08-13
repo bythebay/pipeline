@@ -11,21 +11,13 @@ In addition, Spark MLLib, DataFrames will be demonstrated using a combination of
 
 ## Setup
 
-You need to be able to run Docker containers, which probably means a virtual machine (unless you are running Linux) with at least 5GB, preferably 8GB of RAM in it, and need to be configured for multiple cores.  If you already have Docker, skip to the third method.
+You need to be able to run Docker containers, which probably means a virtual machine (unless you are running Linux) with at least 5GB, preferably 8GB of RAM in it, and need to be configured for multiple cores.  If you already have Docker, skip to the second method.
 
 ### Method 1: Install using Docker Toolbox
 
 * Follow [this README](usbstick/README.md) in the `usbstick/` folder.  It will download all of the things needed to install Docker, Docker Toolbox, and get your environment up and running on OSX.
 
-### Method 2: Install from OVA
-
-* Grab a USB stick, with the bythebay-pipeline.ova file on it
-* Make sure you have VirtualBox, VMware Player or VMware Fusion installed (Fusion is for OSX/Macs)
-* Import the .ova as an appliance, accept the defaults, then start the VM
-* Login as ubuntu/reverse
-* Run `./start-bythebay.sh`, which will start and log you into the Docker container with 5GB of RAM
-
-### Method 3: You already have Docker, or are running Linux
+### Method 2: You already have Docker, or are running Linux
 
 * Pull the pipeline image 
 ```
