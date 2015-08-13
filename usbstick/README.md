@@ -45,14 +45,11 @@ If you need the external IP address of your docker-machine to access services on
 docker-machine ip pipelinebythebay
 ```
 
-Another example of using it in a script might be.  Since I have a bash alias to open chrome. 
+Another example of using it in a script might be.  Since I have a bash alias to open chrome. This opens the spark notebook in crhome.
 
 ```sh
 alias openchrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --kiosk'
-openchrome http://$(docker-machine ip pipelinebythebay):
-# or 
-
-$(docker-machine ip pipelinebythebay)
+openchrome http://$(docker-machine ip pipelinebythebay):39000
 ```
 
 ###Of note
