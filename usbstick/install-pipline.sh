@@ -10,14 +10,14 @@ ask_yes_or_no() {
     esac
 }
 
-if [[ "no" == $(ask_yes_or_no "This will overwrite your current docker binaries with known to work with versiosn. Are you sure?") ]]
-then
-    echo "Skipped."
-    exit 0
-fi
+# if [[ "no" == $(ask_yes_or_no "This will overwrite your current docker binaries with known to work with versiosn. Are you sure?") ]]
+# then
+#     echo "Skipped."
+#     exit 0
+# fi
 
 OSXDIR="osx"
-
+IMAGEHASH="aeab7cca3c8c"
 
 echo "check the version of docker-machine"
 docker-machine -v || echo "somethings wrong"
