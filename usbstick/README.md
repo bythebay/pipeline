@@ -52,6 +52,13 @@ alias openchrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome
 openchrome http://$(docker-machine ip pipelinebythebay):39000
 ```
 
+
+If you choose to use docker-compose you can instantiate the container by running. This assumes you are in the usbstick folder as there is a link to something relative to your pather for the spark notebooks.
+
+```sh
+docker-compose run pipelinetraining
+```
+
 ###Of note
 
 The installer will work offline but will throw an error at the end.

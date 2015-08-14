@@ -25,3 +25,4 @@ pipelinetraining:
     - "34040:4040"
   volumes:
     - $PWD/../notebooks:/root/pipeline/notebooks
+  working_dir: /root/pipeline
