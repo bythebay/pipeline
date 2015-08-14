@@ -8,6 +8,8 @@ fi
 
 mesg n
 
+# TODO: Move all these ENV vars into the Dockerfile, so they could be used by the DOCKER RUN commands
+
 # Dev Install
 export DEV_INSTALL_HOME=~
 
@@ -53,4 +55,4 @@ export SPARK_NOTEBOOK_HOME=$DEV_INSTALL_HOME/spark-notebook-0.6.0-scala-2.10.4-s
 export PATH=$PATH:$SPARK_NOTEBOOK_HOME/bin
 
 # Spark JobServer
-export SPARK_JOBSERVER_HOME=$DEV_INSTALL_HOME/spark-jobserver-0.5.2
+export SPARK_JOBSERVER_HOME=$DEV_INSTALL_HOME/spark-jobserver-$JOBSERVER_VERSION
