@@ -49,6 +49,10 @@ echo ...Configuring SBT...
 echo ...Configuring Spark-Notebook...
 ln -s $PIPELINE_HOME/notebooks/spark-notebook/pipeline $SPARK_NOTEBOOK_HOME/notebooks
 
+# Spark-JobServer
+echo ...Configuring Spark Job Server...
+cp $PIPELINE_HOME/config/spark-jobserver/pipeline.conf $SPARK_JOBSERVER_HOME/
+
 # SSH (Part 2/2)
 echo ...Configuring SSH Part 2 of 2
 # We need to keep the SSH service running for other services to be configured above

@@ -2,6 +2,7 @@ FROM ubuntu:14.04
 
 ENV HOME=/root
 ENV SCALA_VERSION=2.10.4
+ENV SPARK_VERSION=1.4.1
 
 EXPOSE 80 4042 9160 9042 9200 7077 38080 38081 6060 6061 8090 8099 10000 50070 50090 9092 6066 9000 19999 6379 6081 7474 8787 5601 8989 7979 4040
 
@@ -76,7 +77,7 @@ RUN cd ~ \
  && tar xvzf v0.5.2.tar.gz \
  && cd spark-jobserver-0.5.2 \
  && cp ~/pipeline/config/spark-jobserver/* config/ \
- && SPARK_VERSION=1.4.1 bin/server_package.sh pipeline \
+ && bin/server_package.sh pipeline \
  && cp /tmp/job-server/* . \
  && cd ~ \
  && rm v0.5.2.tar.gz \
