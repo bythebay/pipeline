@@ -67,7 +67,7 @@ RUN \
  && wget https://github.com/spark-jobserver/spark-jobserver/archive/v${JOBSERVER_VERSION}.tar.gz \
  && tar xvzf v${JOBSERVER_VERSION}.tar.gz \
  && rm v${JOBSERVER_VERSION}.tar.gz \
- && cd spark-jobserver-${JOBSERVER_VERSION} \
+ && cd ~/spark-jobserver-${JOBSERVER_VERSION} \
  && mkdir -p logs/spark \ 
  && cd ~
 
@@ -77,7 +77,7 @@ RUN \
  && chmod a+rx pipeline/*.sh \
 
 # Spark Job Server (2 of 2)
- && cd spark-jobserver-${JOBSERVER_VERSION} \
+ && cd ~/spark-jobserver-${JOBSERVER_VERSION} \
  && cp ~/pipeline/config/spark-jobserver/* config/ \
  && sbt job-server-tests/package \
  && bin/server_package.sh pipeline \
