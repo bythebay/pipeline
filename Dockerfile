@@ -92,3 +92,5 @@ RUN \
  && cd ~ \
  && rm v${JOBSERVER_VERSION}.tar.gz \
  && rm -rf /tmp/job-server \
+
+WORKDIR /root
