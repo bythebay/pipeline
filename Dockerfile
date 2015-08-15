@@ -13,8 +13,6 @@ RUN \
  && apt-get install -y wget \
  && apt-get install -y vim \
 
-# && apt-get update \
-
 # Start in Home Dir (/root)
  && cd ~ \
 
@@ -68,8 +66,10 @@ RUN \
 # Spark Job Server (1 of 2)
  && wget https://github.com/spark-jobserver/spark-jobserver/archive/v${JOBSERVER_VERSION}.tar.gz \
  && tar xvzf v${JOBSERVER_VERSION}.tar.gz \
+ && rm v${JOBSERVER_VERSION}.tar.gz \
  && cd spark-jobserver-${JOBSERVER_VERSION} \
- && mkdir -p logs/spark 
+ && mkdir -p logs/spark \ 
+ && cd ~
 
 RUN \
 # Retrieve Latest Datasets, Configs, and Start Scripts
@@ -77,13 +77,13 @@ RUN \
  && chmod a+rx pipeline/*.sh \
 
 # Spark Job Server (2 of 2)
+ && cd spark-jobserver-${JOBSERVER_VERSION} \
  && cp ~/pipeline/config/spark-jobserver/* config/ \
  && sbt job-server-tests/package \
  && bin/server_package.sh pipeline \
  && cp /tmp/job-server/* . \
- && cd ~ \
- && rm v${JOBSERVER_VERSION}.tar.gz \
  && rm -rf /tmp/job-server \
+ && cd ~ \
 
 # .profile Shell Environment Variables
  && mv ~/.profile ~/.profile.orig \
@@ -96,7 +96,7 @@ RUN \
 # Sbt Assemble Feeder Producer App
  && sbt feeder/assembly \
 
-# Sbt Assemble Streaming Consumer App
+# Sbt Package Streaming Consumer App
  && sbt streaming/package 
 
 WORKDIR /root
