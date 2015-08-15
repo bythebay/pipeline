@@ -78,7 +78,9 @@ RUN \
 
 # Spark Job Server (2 of 2)
  && cd ~/spark-jobserver-${JOBSERVER_VERSION} \
- && cp ~/pipeline/config/spark-jobserver/* config/ \
+# && cp ~/pipeline/config/spark-jobserver/* config/ \
+ && ln -s ~/pipeline/config/spark-jobserver/pipeline.conf ~/spark-jobserver-0.5.2/config \
+ && ln -s ~/pipeline/config/spark-jobserver/pipeline.sh ~/spark-jobserver-0.5.2/config \
  && sbt job-server-tests/package \
  && bin/server_package.sh pipeline \
  && cp /tmp/job-server/* . \
