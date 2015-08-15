@@ -39,12 +39,13 @@ RUN \
  && wget https://s3.amazonaws.com/fluxcapacitor.com/packages/sbt-0.13.8.tgz \
  && tar xvzf sbt-0.13.8.tgz \
  && rm sbt-0.13.8.tgz \
- && ln -s /root/sbt/bin/sbt /usr/local/bin/sbt \
+ && ln -s /root/sbt/bin/sbt /usr/local/bin \
  && cd pipeline \
  && rm -rf /root/.ivy2 \
- && ../sbt/bin/sbt clean clean-files package
+ && sbt clean clean-files package \
 
-RUN cd ~ \
+# Start from root
+ && cd ~ \
 
 # MySql (Required by Hive Metastore)
 # Generic Install?  http://dev.mysql.com/doc/refman/5.7/en/binary-installation.html
