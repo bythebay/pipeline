@@ -9,4 +9,3 @@ Dating ratings data => Akka app => Kafka => Spark Streaming => Cassandra => Dash
 
 In addition, Spark MLLib, DataFrames will be demonstrated using a combination of the Cassandra real time data plus static Parquet data, on a notebook interface.
 
-Follow the Wiki to guide you through the rest of the workshop --> 
