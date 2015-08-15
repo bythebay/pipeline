@@ -1,14 +1,6 @@
 FROM ubuntu:14.04
 
-#ENV HOME=~
 ENV SCALA_VERSION=2.10.4
-#ENV SPARK_VERSION=1.4.1
-#ENV JOBSERVER_VERSION=0.5.2
-#ENV DEV_INSTALL_HOME=$HOME
-#ENV DATA_HOME=$HOME
-#ENV LOGS_HOME=$HOME
-#ENV PIPELINE_HOME=$HOME/pipeline
-#ENV SPARK_JOBSERVER_HOME=$DEV_INSTALL_HOME/spark-jobserver-$JOBSERVER_VERSION
 
 EXPOSE 80 4042 9160 9042 9200 7077 38080 38081 6060 6061 8090 8099 10000 50070 50090 9092 6066 9000 19999 6379 6081 7474 8787 5601 8989 7979 4040
 
@@ -75,13 +67,10 @@ RUN \
  && rm spark-notebook-0.6.0-scala-2.10.4-spark-1.4.1-hadoop-2.6.0-with-hive-with-parquet.tgz \
 
 # Spark Job Server (1 of 2)
- && wget https://s3.amazonaws.com/fluxcapacitor.com/packages/spark-jobserver-0.5.2.tar.gz \
- && tar xvzf spark-jobserver-0.5.2.tar.gz \
- && rm spark-jobserver-0.5.2.tar.gz \
+ && wget https://s3.amazonaws.com/fluxcapacitor.com/packages/spark-jobserver-0.5.2-fluxcapacitor.tar.gz \
+ && tar xvzf spark-jobserver-0.5.2-fluxcapacitor.tar.gz \
+ && rm spark-jobserver-0.5.2-fluxcapacitor.tar.gz \
  && mkdir -p ~/pipeline/logs/spark-jobserver
-# && wget https://github.com/spark-jobserver/spark-jobserver/archive/v${JOBSERVER_VERSION}.tar.gz \
-# && tar xvzf v${JOBSERVER_VERSION}.tar.gz \
-# && rm v${JOBSERVER_VERSION}.tar.gz
 
 RUN \
 # Retrieve Latest Datasets, Configs, Code, and Start Scripts
