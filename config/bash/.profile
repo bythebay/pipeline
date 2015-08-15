@@ -10,18 +10,6 @@ mesg n
 
 # TODO: Move all these ENV vars into the Dockerfile, so they could be used by the DOCKER RUN commands
 
-# Dev Install
-export DEV_INSTALL_HOME=~
-
-# Data Home
-export DATA_HOME=~
-
-# Logs Home
-export LOGS_HOME=~
-
-# Pipeline Home
-export PIPELINE_HOME=~/pipeline
-
 # Java Home
 export JAVA_HOME=/usr
 
@@ -53,6 +41,3 @@ export SBT_OPTS="-Xmx10G -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=2G"
 # Spark Notebook
 export SPARK_NOTEBOOK_HOME=$DEV_INSTALL_HOME/spark-notebook-0.6.0-scala-2.10.4-spark-1.4.1-hadoop-2.6.0-with-hive-with-parquet
 export PATH=$PATH:$SPARK_NOTEBOOK_HOME/bin
-
-# Spark JobServer
-export SPARK_JOBSERVER_HOME=$DEV_INSTALL_HOME/spark-jobserver-$JOBSERVER_VERSION
