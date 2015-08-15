@@ -8,24 +8,30 @@ fi
 
 mesg n
 
-# TODO: Move all these ENV vars into the Dockerfile, so they could be used by the DOCKER RUN commands
 # Dev Install
 export DEV_INSTALL_HOME=~
 
-# Data Home
-export DATA_HOME=~/data
-
-# Logs Home
-export LOGS_HOME=~/logs
-
 # Pipeline Home
 export PIPELINE_HOME=~/pipeline
+
+###################################################################
+# The following DATA_HOME and LOGS_HOME are not always used by apps
+# due to limitations with certain apps and how they resolve exports
+
+# In these cases, the configs are usually relative to where the
+# service is started
+#   ie. LOGS_DIR=logs/kafka, DATA_DIR=data/zookeeper, etc
+
+# If these paths change, be sure to grep and update the hard coded
+# versions in all apps including the .tgz packages if their
+# configs are not aleady exposed under pipeline/config/...
 
 # Java Home
 export JAVA_HOME=/usr
 
 # MySQL
 export MYSQL_CONNECTOR_JAR=/usr/share/java/mysql-connector-java.jar
+###################################################################
 
 # Cassandra
 export CASSANDRA_HOME=$DEV_INSTALL_HOME/apache-cassandra-2.2.0
