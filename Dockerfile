@@ -77,8 +77,8 @@ RUN \
  && chmod a+rx pipeline/*.sh \
 
 # Spark Job Server (2 of 2)
- && cd ~/spark-jobserver-${JOBSERVER_VERSION} \
- && cp ~/pipeline/config/spark-jobserver/* config/ \
+# && cd ~/spark-jobserver-${JOBSERVER_VERSION} \
+# && cp ~/pipeline/config/spark-jobserver/* config/ \
 # && ln -s ~/pipeline/config/spark-jobserver/pipeline.conf ~/spark-jobserver-0.5.2/config \
 # && ln -s ~/pipeline/config/spark-jobserver/pipeline.sh ~/spark-jobserver-0.5.2/config \
 # && sbt job-server-tests/package \
@@ -92,7 +92,7 @@ RUN \
  && ln -s ~/pipeline/config/bash/.profile ~/.profile \
 
 # Sbt Clean
- && cd pipeline \
+ && cd ~/pipeline \
  && sbt clean clean-files \
 
 # Sbt Assemble Feeder Producer App
