@@ -64,11 +64,11 @@ RUN \
  && rm spark-notebook-0.6.0-scala-2.10.4-spark-1.4.1-hadoop-2.6.0-with-hive-with-parquet.tgz \
 
 # Spark Job Server (1 of 2)
-# && wget https://github.com/spark-jobserver/spark-jobserver/archive/v${JOBSERVER_VERSION}.tar.gz \
-# && tar xvzf v${JOBSERVER_VERSION}.tar.gz \
-# && rm v${JOBSERVER_VERSION}.tar.gz \
-# && cd ~/spark-jobserver-${JOBSERVER_VERSION} \
-# && mkdir -p ~/pipeline/logs/spark-jobserver \ 
+ && wget https://github.com/spark-jobserver/spark-jobserver/archive/v${JOBSERVER_VERSION}.tar.gz \
+ && tar xvzf v${JOBSERVER_VERSION}.tar.gz \
+ && rm v${JOBSERVER_VERSION}.tar.gz \
+ && cd ~/spark-jobserver-${JOBSERVER_VERSION} \
+ && mkdir -p ~/pipeline/logs/spark-jobserver  
 
 RUN \
 # Retrieve Latest Datasets, Configs, and Start Scripts
@@ -77,10 +77,10 @@ RUN \
  && chmod a+rx pipeline/*.sh \
 
 # Spark Job Server (2 of 2)
-# && cd ~/spark-jobserver-${JOBSERVER_VERSION} \
-# && cp ~/pipeline/config/spark-jobserver/* config/ \
-## && ln -s ~/pipeline/config/spark-jobserver/pipeline.conf ~/spark-jobserver-0.5.2/config \
-## && ln -s ~/pipeline/config/spark-jobserver/pipeline.sh ~/spark-jobserver-0.5.2/config \
+ && cd ~/spark-jobserver-${JOBSERVER_VERSION} \
+ && cp ~/pipeline/config/spark-jobserver/* config/ \
+# && ln -s ~/pipeline/config/spark-jobserver/pipeline.conf ~/spark-jobserver-0.5.2/config \
+# && ln -s ~/pipeline/config/spark-jobserver/pipeline.sh ~/spark-jobserver-0.5.2/config \
 # && sbt job-server-tests/package \
 # && bin/server_package.sh pipeline \
 # && cp /tmp/job-server/* . \
