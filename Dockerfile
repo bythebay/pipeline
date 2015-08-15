@@ -21,16 +21,8 @@ RUN \
 # Git
  && apt-get install -y git \
 
-# Retrieve Latest Datasets, Configs, and Start Scripts
- && git clone https://github.com/bythebay/pipeline.git \
- && chmod a+rx pipeline/*.sh \
-
 # SSH
  && apt-get install -y openssh-server \
-
-# .profile Shell Environment Variables
- && mv ~/.profile ~/.profile.orig \
- && ln -s ~/pipeline/config/bash/.profile ~/.profile \
 
 # Java
  && apt-get install -y default-jdk \
@@ -40,18 +32,11 @@ RUN \
  && tar xvzf sbt-0.13.8.tgz \
  && rm sbt-0.13.8.tgz \
  && ln -s /root/sbt/bin/sbt /usr/local/bin \
- && cd pipeline \
- && rm -rf /root/.ivy2 \
- && sbt clean clean-files package \
+ && rm -rf /root/.ivy2 
 
-# Feeder Producer App
- && sbt feeder/assembly \
-
-# Streaming Consumer App
- && sbt streaming/package \
-
+RUN \
 # Start from root
- && cd ~ \
+ cd ~ \
 
 # MySql (Required by Hive Metastore)
 # Generic Install?  http://dev.mysql.com/doc/refman/5.7/en/binary-installation.html
@@ -80,11 +65,18 @@ RUN \
  && tar xvzf spark-notebook-0.6.0-scala-2.10.4-spark-1.4.1-hadoop-2.6.0-with-hive-with-parquet.tgz \
  && rm spark-notebook-0.6.0-scala-2.10.4-spark-1.4.1-hadoop-2.6.0-with-hive-with-parquet.tgz \
 
-# Spark Job Server
+# Spark Job Server (1 of 2)
  && wget https://github.com/spark-jobserver/spark-jobserver/archive/v${JOBSERVER_VERSION}.tar.gz \
  && tar xvzf v${JOBSERVER_VERSION}.tar.gz \
  && cd spark-jobserver-${JOBSERVER_VERSION} \
- && mkdir -p logs/spark \
+ && mkdir -p logs/spark 
+
+RUN \
+# Retrieve Latest Datasets, Configs, and Start Scripts
+ git clone https://github.com/bythebay/pipeline.git \
+ && chmod a+rx pipeline/*.sh \
+
+# Spark Job Server (2 of 2)
  && cp ~/pipeline/config/spark-jobserver/* config/ \
  && sbt job-server-tests/package \
  && bin/server_package.sh pipeline \
@@ -92,5 +84,19 @@ RUN \
  && cd ~ \
  && rm v${JOBSERVER_VERSION}.tar.gz \
  && rm -rf /tmp/job-server \
+
+# .profile Shell Environment Variables
+ && mv ~/.profile ~/.profile.orig \
+ && ln -s ~/pipeline/config/bash/.profile ~/.profile \
+
+# Sbt Clean
+ && cd pipeline \
+ && sbt clean clean-files \
+
+# Sbt Assemble Feeder Producer App
+ && sbt feeder/assembly \
+
+# Sbt Assemble Streaming Consumer App
+ && sbt streaming/package 
 
 WORKDIR /root
