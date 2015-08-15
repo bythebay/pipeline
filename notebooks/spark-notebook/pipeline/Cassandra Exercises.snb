@@ -1,0 +1,345 @@
+{
+  "metadata" : {
+    "name" : "Cassandra Exercises - Load and Save Movie and Ratings Data",
+    "user_save_timestamp" : "1970-01-01T00:00:00.000Z",
+    "auto_save_timestamp" : "1970-01-01T00:00:00.000Z",
+    "language_info" : {
+      "name" : "scala",
+      "file_extension" : "scala",
+      "codemirror_mode" : "text/x-scala"
+    },
+    "trusted" : true,
+    "customLocalRepo" : "/tmp/repo",
+    "customRepos" : null,
+    "customDeps" : [ "com.datastax.spark:spark-cassandra-connector_2.10:1.4.0-M3", "org.elasticsearch:elasticsearch-spark_2.10:2.1.0", "org.apache.spark:spark-streaming-kafka-assembly_2.10:1.4.0", "org.apache.spark % spark-graphx_2.10 % 1.4.1", "com.databricks:spark-csv_2.10:1.2.0", "- org.apache.spark % spark-core_2.10 % _", "- org.apache.spark % spark-streaming_2.10 % _", "- org.apache.hadoop % _ % _" ],
+    "customImports" : null,
+    "customSparkConf" : null
+  },
+  "cells" : [ {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Setup the SQL Context and necessary imports"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.{Logging, SparkConf}\nval cassandraHost:String = \"localhost\"\nreset(lastChanges= _.set(\"spark.cassandra.connection.host\", cassandraHost))",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.{Logging, SparkConf}\ncassandraHost: String = localhost\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 1
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val sqlContext = new org.apache.spark.sql.SQLContext(sparkContext)\nimport sqlContext.implicits._\nimport org.apache.spark.sql.functions._",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "sqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@733c3c3c\nimport sqlContext.implicits._\nimport org.apache.spark.sql.functions._\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 2
+    } ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "## Exercise 1 - Load the movies from cvs and save to Cassandra\n### Load the Movies dataset as Data Frames"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val moviesFromCSV = sqlContext.read.format(\"com.databricks.spark.csv\")\n                        .option(\"header\", \"true\")\n                        .load(\"file:/root/pipeline/datasets/ml-latest-small/movies.csv\")\n                        .toDF(\"movieid\", \"title\", \"genres\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "moviesFromCSV: org.apache.spark.sql.DataFrame = [movieid: string, title: string, genres: string]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon8eaedb15228ab895266b170e3e98d222&quot;,&quot;partitionIndexId&quot;:&quot;anon4e5392adcbc2b4f57101d0b28d44fd5d&quot;,&quot;numPartitions&quot;:358,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;movieid&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;title&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;genres&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 3
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : ":markdown\nThere are ${moviesFromCSV.count} ratings",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res3: String = There are 8927 ratings\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/markdown" : "There are 8927 ratings"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 4
+    } ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Save the Data Frame to Cassandra\n\nCreate the necessary CQL schema\n\n* In a terminal window go to cqlsh\n* Change to use the pipeline schema --> use pipeline;\n* Create the schema for movies by ratings  -->  CREATE TABLE movies (movieId int, title text, genres text, PRIMARY KEY(movieId));\n\n"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.sql.SaveMode\n\nmoviesFromCSV.write.format(\"org.apache.spark.sql.cassandra\")\n          .mode(SaveMode.Append)\n          .options(Map(\"keyspace\" -> \"pipeline\", \"table\" -> \"movies\"))\n          .save()",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "import org.apache.spark.sql.SaveMode\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 5
+    } ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "Verify the data was inserted in Cassandra\n* cqlsh\n* use pipeline;\n* select * from movies where movieid = 19;"
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "## Exercise 2 - Load the movies and rating data \n### Load the ratings data from csv\n\nRename the column movieId so that it doesn't conflict after joining with movie data"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val ratingsDF = sqlContext.read.format(\"com.databricks.spark.csv\")\n                    .option(\"header\", \"true\")\n                    .load(\"file:/root/pipeline/datasets/ml-latest-small/ratings.csv\")\n                    .withColumnRenamed(\"movieId\",\"ratingMovieId\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "ratingsDF: org.apache.spark.sql.DataFrame = [userId: string, ratingMovieId: string, rating: string, timestamp: string]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon3e72eb135365b7b0eb929dc0c989b51b&quot;,&quot;partitionIndexId&quot;:&quot;anon01f6d60af537776e711f3d0c9a30495e&quot;,&quot;numPartitions&quot;:4010,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;userId&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;ratingMovieId&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;rating&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;timestamp&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 6
+    } ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Load the movie data from Cassandra"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val moviesDF = sqlContext.read.format(\"org.apache.spark.sql.cassandra\")\n                    .options(Map( \"keyspace\" -> \"pipeline\", \"table\" -> \"movies\"))\n                    .load()",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "moviesDF: org.apache.spark.sql.DataFrame = [movieid: int, genres: string, title: string]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anona005683eabb496e13ecbf5a95391f97c&quot;,&quot;partitionIndexId&quot;:&quot;anoncd57ccc64d3701c7cf75dad41bcca167&quot;,&quot;numPartitions&quot;:358,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;movieid&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;genres&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;title&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 7
+    } ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Calculate the Average Ratings for each Movie"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val movieRatingAvgMax = ratingsDF.groupBy(ratingsDF(\"ratingMovieId\"))\n                          .agg(avg($\"rating\"), max($\"rating\"))\n                          .toDF(\"ratingMovieId\", \"avg_rating\", \"max_rating\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "movieRatingAvgMax: org.apache.spark.sql.DataFrame = [ratingMovieId: string, avg_rating: double, max_rating: string]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon68410b1db9a3706808dcb7989a2a5755&quot;,&quot;partitionIndexId&quot;:&quot;anonc918d8ef1df839e8ef894ef593df3a3b&quot;,&quot;numPartitions&quot;:357,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;ratingMovieId&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;avg_rating&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;max_rating&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 8
+    } ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Join the Movie Ratings Averages and Maxs with the Details of the Movie"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val joinedMovieRatingDF = movieRatingAvgMax\n            .join(moviesDF, movieRatingAvgMax(\"ratingMovieId\") === moviesDF(\"movieid\"))\n            .drop(\"ratingMovieId\")",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "joinedMovieRatingDF: org.apache.spark.sql.DataFrame = [avg_rating: double, max_rating: string, movieid: int, genres: string, title: string]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon670005a01bade21f1b24e3dfdb1aa197&quot;,&quot;partitionIndexId&quot;:&quot;anon3f8373b544047f3a8442013c010915ff&quot;,&quot;numPartitions&quot;:357,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;avg_rating&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;max_rating&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;movieid&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;genres&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;title&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 9
+    } ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Save the Data Frame to Cassandra\n\n* Create the necessary CQL schema - in a terminal window go to cqlsh\n* Change to use the pipeline schema --> use pipeline;\n* Create the schema for movies by ratings  -->  CREATE TABLE movies_by_ratings (avg_rating float, max_rating float, movieId int, genres text, title text, PRIMARY KEY(movieId));\"\n"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "joinedMovieRatingDF.write.format(\"org.apache.spark.sql.cassandra\")\n          .mode(SaveMode.Append)\n          .options(Map(\"keyspace\" -> \"pipeline\", \"table\" -> \"movies_by_ratings\"))\n          .save()",
+    "outputs" : [ {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 10
+    } ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "###Pushing Queries Down to Cassandra"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "moviesDF.explain",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "== Physical Plan ==\nPhysicalRDD [movieid#17,genres#18,title#19], MapPartitionsRDD[212] at explain at <console>:60\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 35
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val moviesDF3 = sqlContext.read.format(\"org.apache.spark.sql.cassandra\")\n                    .options(Map( \"keyspace\" -> \"pipeline\", \"table\" -> \"movies\"))\n                    .load()\n\nval filteredMovies = moviesDF3.filter(moviesDF3(\"movieid\") > 8000)",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "moviesDF3: org.apache.spark.sql.DataFrame = [movieid: int, genres: string, title: string]\nfilteredMovies: org.apache.spark.sql.DataFrame = [movieid: int, genres: string, title: string]\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon1d5fe59f7d348de627a5773329eb4e0d&quot;,&quot;partitionIndexId&quot;:&quot;anonf3c5053fec3f53508e998dd4a5a07fd2&quot;,&quot;numPartitions&quot;:137,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;movieid&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;genres&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;title&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 36
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "filteredMovies.explain",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "== Physical Plan ==\nFilter (movieid#118 > 8000)\n PhysicalRDD [movieid#118,genres#119,title#120], MapPartitionsRDD[223] at explain at <console>:62\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/html" : ""
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 37
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : ":markdown\nThere are ${moviesDF.count} movies before filtering and\n${filteredMovies.count} movies after filtering",
+    "outputs" : [ {
+      "name" : "stdout",
+      "output_type" : "stream",
+      "text" : "res20: String = \nThere are 8927 movies before filtering and\n3402 movies after filtering\n"
+    }, {
+      "metadata" : { },
+      "data" : {
+        "text/markdown" : "There are 8927 movies before filtering and\n3402 movies after filtering"
+      },
+      "output_type" : "execute_result",
+      "execution_count" : 38
+    } ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true
+    },
+    "cell_type" : "code",
+    "source" : "",
+    "outputs" : [ ]
+  } ],
+  "nbformat" : 4
+}

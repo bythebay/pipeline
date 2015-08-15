@@ -13,6 +13,7 @@ bzip2 -d -k datasets/dating/gender.json.bz2
 bzip2 -d -k datasets/dating/gender.csv.bz2
 bzip2 -d -k datasets/dating/ratings.json.bz2
 bzip2 -d -k datasets/dating/ratings.csv.bz2
+tar xf datasets/ml-latest-small.tar.bz2 -C datasets
 
 # MySQL (Required by HiveQL Exercises)
 echo ...Configurating MySQL...
