@@ -5,6 +5,6 @@
 PIDFILE=spark-jobserver.pid
 SPARK_HOME=/root/spark-1.4.1-bin-fluxcapacitor
 SPARK_CONF_DIR=$SPARK_HOME/conf
-LOG_DIR=$SPARK_JOBSERVER_HOME
+LOG_DIR=$LOGS_HOME/spark-jobserver
 # For Docker, always run start script as foreground
 # JOBSERVER_FG=1

@@ -1,14 +1,14 @@
 FROM ubuntu:14.04
 
-ENV HOME=/root
+#ENV HOME=~
 ENV SCALA_VERSION=2.10.4
-ENV SPARK_VERSION=1.4.1
-ENV JOBSERVER_VERSION=0.5.2
-ENV DEV_INSTALL_HOME=$HOME
-ENV DATA_HOME=$HOME
-ENV LOGS_HOME=$HOME
-ENV PIPELINE_HOME=$HOME/pipeline
-ENV SPARK_JOBSERVER_HOME=$DEV_INSTALL_HOME/spark-jobserver-$JOBSERVER_VERSION
+#ENV SPARK_VERSION=1.4.1
+#ENV JOBSERVER_VERSION=0.5.2
+#ENV DEV_INSTALL_HOME=$HOME
+#ENV DATA_HOME=$HOME
+#ENV LOGS_HOME=$HOME
+#ENV PIPELINE_HOME=$HOME/pipeline
+#ENV SPARK_JOBSERVER_HOME=$DEV_INSTALL_HOME/spark-jobserver-$JOBSERVER_VERSION
 
 EXPOSE 80 4042 9160 9042 9200 7077 38080 38081 6060 6061 8090 8099 10000 50070 50090 9092 6066 9000 19999 6379 6081 7474 8787 5601 8989 7979 4040
 
@@ -45,7 +45,7 @@ RUN \
 
 RUN \
 # Start from ~
- cd $HOME \
+ cd ~ \
 
 # MySql (Required by Hive Metastore)
 # Generic Install?  http://dev.mysql.com/doc/refman/5.7/en/binary-installation.html
@@ -75,24 +75,29 @@ RUN \
  && rm spark-notebook-0.6.0-scala-2.10.4-spark-1.4.1-hadoop-2.6.0-with-hive-with-parquet.tgz \
 
 # Spark Job Server (1 of 2)
- && wget https://github.com/spark-jobserver/spark-jobserver/archive/v${JOBSERVER_VERSION}.tar.gz \
- && tar xvzf v${JOBSERVER_VERSION}.tar.gz \
- && rm v${JOBSERVER_VERSION}.tar.gz
+ && wget https://s3.amazonaws.com/fluxcapacitor.com/packages/spark-jobserver-0.5.2.tar.gz \
+ && tar xvzf spark-jobserver-0.5.2.tar.gz \
+ && rm spark-jobserver-0.5.2.tar.gz \
+ && mkdir -p ~/pipeline/logs/spark-jobserver
+# && wget https://github.com/spark-jobserver/spark-jobserver/archive/v${JOBSERVER_VERSION}.tar.gz \
+# && tar xvzf v${JOBSERVER_VERSION}.tar.gz \
+# && rm v${JOBSERVER_VERSION}.tar.gz
 
 RUN \
-# Retrieve Latest Datasets, Configs, and Start Scripts
- cd $PIPELINE_HOME \
+# Retrieve Latest Datasets, Configs, Code, and Start Scripts
+ cd ~/pipeline \
  && git reset --hard && git pull \
  && chmod a+rx *.sh \
 
 # Spark Job Server (2 of 2)
- && cd $SPARK_JOBSERVER_HOME \
- && cp ~/pipeline/config/spark-jobserver/* config/ \
+ && ln ~/pipeline/config/spark-jobserver/pipeline.sh ~/spark-jobserver-0.5.2/config \
+ && ln ~/pipeline/config/spark-jobserver/pipeline.conf ~/spark-jobserver-0.5.2/config \
+ && cd ~/spark-jobserver-0.5.2 \
  && sbt job-server-tests/package \
  && bin/server_package.sh pipeline \
  && cp /tmp/job-server/* . \
  && rm -rf /tmp/job-server \
- && cd $HOME \
+ && cd ~ \
 
 # .profile Shell Environment Variables
  && mv ~/.profile ~/.profile.orig \
