@@ -30,16 +30,15 @@ RUN \
  && tar xvzf sbt-0.13.8.tgz \
  && rm sbt-0.13.8.tgz \
  && ln -s /root/sbt/bin/sbt /usr/local/bin \
- && rm -rf /root/.ivy2 \ 
 
 # Get Latest Pipeline Code
- && cd ~
+ && cd ~ \
  && git clone https://github.com/bythebay/pipeline.git \
 
 # Sbt Clean
  && sbt clean clean-files 
 
-RUN
+RUN \
 # Start from ~
  cd ~ \
 
