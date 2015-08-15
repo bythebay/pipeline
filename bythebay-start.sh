@@ -1,17 +1,7 @@
 #!/bin/bash
 
-echo ...Starting ElasticSearch...
-# nohup elasticsearch -p $ELASTICSEARCH_HOME/RUNNING_PID &
-
-echo ...Starting Logstash...
-# nohup logstash agent -f $PIPELINE_HOME/config/logstash/logstash.conf &
-
 echo ...Starting SSH...
 service ssh start
-
-echo ...Starting Ganglia...
-# service ganglia-monitor start
-# service gmetad start
 
 echo ...Starting Apache2 Httpd...
 # service apache2 start
@@ -40,18 +30,11 @@ echo ...Starting Apache Spark JDBC ODBC Hive ThriftServer...
 ## The actual Hive metastore defined in conf/hive-site.xml is still used, however.
 nohup $SPARK_HOME/sbin/start-thriftserver.sh --jars $MYSQL_CONNECTOR_JAR --master spark://127.0.0.1:7077
 
-#echo ...Starting Tachyon...
-#nohup tachyon format
-#nohup $TACHYON_HOME/bin/tachyon-start.sh local
-
 echo ...Starting Spark Notebook...
 screen  -m -d -S "snb" bash -c 'source ~/pipeline/config/bash/.profile && spark-notebook -Dconfig.file=$PIPELINE_HOME/config/spark-notebook/application-pipeline.conf >> nohup.out'
 
 echo ...Starting Spark History Server...
 $SPARK_HOME/sbin/start-history-server.sh
-
-echo ...Starting Kibana...
-# nohup kibana &
 
 echo ...Starting Kafka Schema Registry...
 # Starting this at the end due to race conditions with other kafka components
@@ -59,9 +42,3 @@ nohup schema-registry-start $PIPELINE_HOME/config/schema-registry/schema-registr
 
 echo ...Starting Kafka REST Proxy...
 nohup kafka-rest-start $PIPELINE_HOME/config/kafka-rest/kafka-rest.properties &
-
-echo '.......................'
-echo '...     ALL DONE    ...'
-echo '...   PRESS ENTER   ...'
-echo '...   TO CONTINUE   ...'
-echo '.......................'

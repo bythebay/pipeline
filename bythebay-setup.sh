@@ -21,3 +21,8 @@ chmod a+rx *.sh
 # Initialize Kafka, Cassandra, Hive
 ./bythebay-create.sh
 
+echo ...Exported Variables...
+export
+
+echo ...Running Java Processes...
+jps -l
