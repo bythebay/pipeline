@@ -32,6 +32,10 @@ RUN \
  && ln -s /root/sbt/bin/sbt /usr/local/bin \
  && rm -rf /root/.ivy2 \ 
 
+# Get Latest Pipeline Code
+ && cd ~
+ && git clone https://github.com/bythebay/pipeline.git \
+
 # Sbt Clean
  && sbt clean clean-files 
 
@@ -70,13 +74,12 @@ RUN
  && wget https://github.com/spark-jobserver/spark-jobserver/archive/v${JOBSERVER_VERSION}.tar.gz \
  && tar xvzf v${JOBSERVER_VERSION}.tar.gz \
  && rm v${JOBSERVER_VERSION}.tar.gz \
- && cd ~/spark-jobserver-${JOBSERVER_VERSION} \
  && mkdir -p ~/pipeline/logs/spark-jobserver  
 
 RUN \
 # Retrieve Latest Datasets, Configs, and Start Scripts
- cd ~ \ 
- && git clone https://github.com/bythebay/pipeline.git \
+ cd ~/pipeline \
+ && git reset --hard && git pull \
  && chmod a+rx pipeline/*.sh \
 
 # Spark Job Server (2 of 2)
