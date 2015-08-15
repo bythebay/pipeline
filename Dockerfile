@@ -25,15 +25,18 @@ RUN \
 # Java
  && apt-get install -y default-jdk \
 
-# SBT
+# Sbt
  && wget https://s3.amazonaws.com/fluxcapacitor.com/packages/sbt-0.13.8.tgz \
  && tar xvzf sbt-0.13.8.tgz \
  && rm sbt-0.13.8.tgz \
  && ln -s /root/sbt/bin/sbt /usr/local/bin \
- && rm -rf /root/.ivy2 
+ && rm -rf /root/.ivy2 \ 
 
-RUN \
-# Start from root
+# Sbt Clean
+ && sbt clean clean-files 
+
+RUN
+# Start from ~
  cd ~ \
 
 # MySql (Required by Hive Metastore)
@@ -91,16 +94,12 @@ RUN \
  && mv ~/.profile ~/.profile.orig \
  && ln -s ~/pipeline/config/bash/.profile ~/.profile \
 
-# Sbt Clean
- && cd ~/pipeline \
- && sbt clean clean-files \
-
 # Sbt Assemble Feeder Producer App
  && cd ~/pipeline \
  && sbt feeder/assembly \
 
 # Sbt Package Streaming Consumer App
- && cs ~/pipeline \
+ && cd ~/pipeline \
  && sbt streaming/package 
 
 WORKDIR /root
