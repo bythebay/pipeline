@@ -96,9 +96,11 @@ RUN \
  && sbt clean clean-files \
 
 # Sbt Assemble Feeder Producer App
+ && cd ~/pipeline \
  && sbt feeder/assembly \
 
 # Sbt Package Streaming Consumer App
+ && cs ~/pipeline \
  && sbt streaming/package 
 
 WORKDIR /root
