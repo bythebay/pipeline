@@ -69,11 +69,11 @@ RUN \
 # && rm v${JOBSERVER_VERSION}.tar.gz \
 # && cd ~/spark-jobserver-${JOBSERVER_VERSION} \
 # && mkdir -p ~/pipeline/logs/spark-jobserver \ 
-# && cd ~
 
 RUN \
 # Retrieve Latest Datasets, Configs, and Start Scripts
- git clone https://github.com/bythebay/pipeline.git \
+ cd ~ \ 
+ && git clone https://github.com/bythebay/pipeline.git \
  && chmod a+rx pipeline/*.sh \
 
 # Spark Job Server (2 of 2)
