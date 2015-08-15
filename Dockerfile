@@ -44,6 +44,12 @@ RUN \
  && rm -rf /root/.ivy2 \
  && sbt clean clean-files package \
 
+# Feeder Producer App
+ && sbt feeder/assembly \
+
+# Streaming Consumer App
+ && sbt streaming/package \
+
 # Start from root
  && cd ~ \
 
