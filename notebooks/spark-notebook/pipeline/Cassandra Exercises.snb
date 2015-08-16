@@ -38,7 +38,7 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "sqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@75f11d84\nimport sqlContext.implicits._\nimport org.apache.spark.sql.functions._\n"
+      "text" : "sqlContext: org.apache.spark.sql.SQLContext = org.apache.spark.sql.SQLContext@3b265746\nimport sqlContext.implicits._\nimport org.apache.spark.sql.functions._\n"
     }, {
       "metadata" : { },
       "data" : {
@@ -66,7 +66,7 @@
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonb086415809c3ec0458e869eee943a97b&quot;,&quot;partitionIndexId&quot;:&quot;anon89e44bbb8d10827d6eaaad954a153265&quot;,&quot;numPartitions&quot;:358,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;movieid&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;title&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;genres&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon047aa8a52e4e54597785016ee176f039&quot;,&quot;partitionIndexId&quot;:&quot;anonda7910d20b8225af3817c9d40b160dca&quot;,&quot;numPartitions&quot;:358,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;movieid&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;title&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;genres&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
       "execution_count" : 2
@@ -82,24 +82,15 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res6: String = There are **8927** movies\n"
+      "text" : "res2: String = There are **8927** movies\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/markdown" : "There are **8927** movies"
       },
       "output_type" : "execute_result",
-      "execution_count" : 8
+      "execution_count" : 3
     } ]
-  }, {
-    "metadata" : {
-      "trusted" : true,
-      "input_collapsed" : false,
-      "collapsed" : true
-    },
-    "cell_type" : "code",
-    "source" : "",
-    "outputs" : [ ]
   }, {
     "metadata" : { },
     "cell_type" : "markdown",
@@ -115,14 +106,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "import com.datastax.spark.connector.cql.CassandraConnector\nres7: com.datastax.driver.core.ResultSet = ResultSet[ exhausted: true, Columns[]]\n"
+      "text" : "import com.datastax.spark.connector.cql.CassandraConnector\nres3: com.datastax.driver.core.ResultSet = ResultSet[ exhausted: true, Columns[]]\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : "ResultSet[ exhausted: true, Columns[]]"
       },
       "output_type" : "execute_result",
-      "execution_count" : 9
+      "execution_count" : 4
     } ]
   }, {
     "metadata" : {
@@ -142,7 +133,7 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 10
+      "execution_count" : 5
     } ]
   }, {
     "metadata" : { },
@@ -167,10 +158,10 @@
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon02e67037007d8b51edeefbce17f31a12&quot;,&quot;partitionIndexId&quot;:&quot;anon2dedf7371ac4db9e8f7ab56d9ecea6b0&quot;,&quot;numPartitions&quot;:4010,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;userId&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;ratingMovieId&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;rating&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;timestamp&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon48f3c86c970453c8d60b79b2eb288f27&quot;,&quot;partitionIndexId&quot;:&quot;anondaf7ac0e49cec6d93ce23b823812e0ba&quot;,&quot;numPartitions&quot;:4010,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;userId&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;ratingMovieId&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;rating&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;timestamp&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 2
+      "execution_count" : 6
     } ]
   }, {
     "metadata" : {
@@ -183,14 +174,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res2: String = There are **100234** ratings\n"
+      "text" : "res5: String = There are **100234** ratings\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/markdown" : "There are **100234** ratings"
       },
       "output_type" : "execute_result",
-      "execution_count" : 3
+      "execution_count" : 7
     } ]
   }, {
     "metadata" : { },
@@ -211,10 +202,10 @@
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon08263ff3a7723c857c2613510e710c94&quot;,&quot;partitionIndexId&quot;:&quot;anon79d934fe1b361648bee46f19cfe39805&quot;,&quot;numPartitions&quot;:358,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;movieid&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;genres&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;title&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonc478b6003a86a5c54a79d11d533d59b9&quot;,&quot;partitionIndexId&quot;:&quot;anon8813dfaf7f84dfb0e115c63f2d06f2ca&quot;,&quot;numPartitions&quot;:358,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;movieid&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;genres&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;title&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 4
+      "execution_count" : 8
     } ]
   }, {
     "metadata" : {
@@ -227,14 +218,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res3: String = There are **8927** movies\n"
+      "text" : "res6: String = There are **8927** movies\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/markdown" : "There are **8927** movies"
       },
       "output_type" : "execute_result",
-      "execution_count" : 5
+      "execution_count" : 9
     } ]
   }, {
     "metadata" : { },
@@ -255,10 +246,10 @@
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonf68e7d457a33eca7053b102c2590caeb&quot;,&quot;partitionIndexId&quot;:&quot;anon251b87843d8de328fad06a98dd19273e&quot;,&quot;numPartitions&quot;:4010,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;movieid&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;genres&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;title&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;userid&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;rating&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;timestamp&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon43f2a0c31660264ffb9ce5c769f99166&quot;,&quot;partitionIndexId&quot;:&quot;anonfa89bd22e73094e3400d7fe206827317&quot;,&quot;numPartitions&quot;:4010,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;movieid&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;genres&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;title&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;userid&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;rating&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;timestamp&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 19
+      "execution_count" : 10
     } ]
   }, {
     "metadata" : { },
@@ -275,14 +266,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res12: com.datastax.driver.core.ResultSet = ResultSet[ exhausted: true, Columns[]]\n"
+      "text" : "res7: com.datastax.driver.core.ResultSet = ResultSet[ exhausted: true, Columns[]]\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : "ResultSet[ exhausted: true, Columns[]]"
       },
       "output_type" : "execute_result",
-      "execution_count" : 22
+      "execution_count" : 11
     } ]
   }, {
     "metadata" : {
@@ -302,12 +293,12 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 23
+      "execution_count" : 12
     } ]
   }, {
     "metadata" : { },
     "cell_type" : "markdown",
-    "source" : "Verify the data was inserted in Cassandra by running the following commands in the terminal\n \n* cqlsh\n* use pipeline;\n* desc movies;\n* select * from movies_with_ratings where movieid = 19;"
+    "source" : "Verify the data was inserted in Cassandra by running the following commands in the terminal\n \n* cqlsh\n* use pipeline;\n* desc movies_with_ratings;\n* select * from movies_with_ratings where movieid = 19;"
   }, {
     "metadata" : { },
     "cell_type" : "markdown",
@@ -327,10 +318,10 @@
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon6b5cd16de29db9579888e092535c63f2&quot;,&quot;partitionIndexId&quot;:&quot;anon844701add1e9c650000f4cc43c89eb14&quot;,&quot;numPartitions&quot;:357,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;ratingMovieId&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;avg_rating&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;max_rating&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon724bf749eaf6f59ff08eb9671da78adf&quot;,&quot;partitionIndexId&quot;:&quot;anon821a63022c791a626335256453fcba38&quot;,&quot;numPartitions&quot;:357,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;ratingMovieId&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;avg_rating&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;max_rating&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 24
+      "execution_count" : 17
     } ]
   }, {
     "metadata" : {
@@ -347,10 +338,10 @@
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon009646ec6f6ba97e913fdccd6960063e&quot;,&quot;partitionIndexId&quot;:&quot;anona96cb459d5e0123b2a3884118adb0adf&quot;,&quot;numPartitions&quot;:357,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;avg_rating&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;max_rating&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;movieid&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;genres&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;title&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anond6bf712d50dfd77921ef33289da6f64f&quot;,&quot;partitionIndexId&quot;:&quot;anon0dc4a306fba3432b310d538b7555065f&quot;,&quot;numPartitions&quot;:357,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;avg_rating&quot;,&quot;type&quot;:&quot;double&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;max_rating&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;movieid&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;genres&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;title&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 25
+      "execution_count" : 18
     } ]
   }, {
     "metadata" : { },
@@ -367,14 +358,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res14: com.datastax.driver.core.ResultSet = ResultSet[ exhausted: true, Columns[]]\n"
+      "text" : "res11: com.datastax.driver.core.ResultSet = ResultSet[ exhausted: true, Columns[]]\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : "ResultSet[ exhausted: true, Columns[]]"
       },
       "output_type" : "execute_result",
-      "execution_count" : 26
+      "execution_count" : 19
     } ]
   }, {
     "metadata" : {
@@ -390,12 +381,12 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 27
+      "execution_count" : 20
     } ]
   }, {
     "metadata" : { },
     "cell_type" : "markdown",
-    "source" : "Verify the data was inserted in Cassandra by running the following commands in the terminal\n \n* cqlsh\n* use pipeline;\n* desc movies;\n* select * from movies_average_ratings where movieid = 19;"
+    "source" : "Verify the data was inserted in Cassandra by running the following commands in the terminal\n \n* cqlsh\n* use pipeline;\n* desc movies_average_ratings;\n* select * from movies_average_ratings where movieid = 19;"
   }, {
     "metadata" : { },
     "cell_type" : "markdown",
@@ -411,14 +402,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "== Physical Plan ==\nPhysicalRDD [movieid#11,genres#12,title#13], MapPartitionsRDD[229] at explain at <console>:65\n"
+      "text" : "== Physical Plan ==\nPhysicalRDD [movieid#23,genres#24,title#25], MapPartitionsRDD[167] at explain at <console>:64\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 28
+      "execution_count" : 21
     } ]
   }, {
     "metadata" : {
@@ -435,10 +426,10 @@
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon887ac2238d8027a88063e0bc6af63961&quot;,&quot;partitionIndexId&quot;:&quot;anon0f907d4878db4748a383434a55d26b46&quot;,&quot;numPartitions&quot;:137,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;movieid&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;genres&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;title&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon340151ef166f315fb7554de1a89fcfa0&quot;,&quot;partitionIndexId&quot;:&quot;anon49c594ef47e0944421a424fa54c808e1&quot;,&quot;numPartitions&quot;:137,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;movieid&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;genres&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;title&quot;,&quot;type&quot;:&quot;string&quot;,&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 29
+      "execution_count" : 22
     } ]
   }, {
     "metadata" : {
@@ -451,14 +442,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "== Physical Plan ==\nFilter (movieid#97 > 8000)\n PhysicalRDD [movieid#97,genres#98,title#99], MapPartitionsRDD[240] at explain at <console>:67\n"
+      "text" : "== Physical Plan ==\nFilter (movieid#109 > 8000)\n PhysicalRDD [movieid#109,genres#110,title#111], MapPartitionsRDD[177] at explain at <console>:66\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 30
+      "execution_count" : 23
     } ]
   }, {
     "metadata" : { },
@@ -479,10 +470,10 @@
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anonf2798679992bdf0c8ecd924f6792e804&quot;,&quot;partitionIndexId&quot;:&quot;anon9c30e2cdb3504f4bc5ced868b6fc09bc&quot;,&quot;numPartitions&quot;:357,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;movieid&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:false,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;ratings&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;double&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
+        "text/html" : "<div class=\"df-canvas\">\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon011aef64c96ff2f9023be2f55965ff70&quot;,&quot;partitionIndexId&quot;:&quot;anonc55060af3527253fae25e6733a28fb56&quot;,&quot;numPartitions&quot;:357,&quot;dfSchema&quot;:{&quot;type&quot;:&quot;struct&quot;,&quot;fields&quot;:[{&quot;name&quot;:&quot;movieid&quot;,&quot;type&quot;:&quot;integer&quot;,&quot;nullable&quot;:false,&quot;metadata&quot;:{}},{&quot;name&quot;:&quot;ratings&quot;,&quot;type&quot;:{&quot;type&quot;:&quot;array&quot;,&quot;elementType&quot;:&quot;double&quot;,&quot;containsNull&quot;:false},&quot;nullable&quot;:true,&quot;metadata&quot;:{}}]}}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/dataframe','../javascripts/notebook/consoleDir'], \n      function(dataframe, extension) {\n        dataframe.call(data, this, extension);\n      }\n    );/*]]>*/</script>\n      <link rel=\"stylesheet\" href=\"/assets/stylesheets/ipython/css/dataframe.css\" type=\"text/css\"/>\n    </div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 43
+      "execution_count" : 24
     } ]
   }, {
     "metadata" : {
@@ -495,14 +486,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res26: List[List[Double]] = List(List(3.0, 3.0), List(3.0, 4.0, 5.0, 5.0, 3.0, 5.0, 4.0, 5.0, 5.0, 5.0, 2.0, 5.0, 4.0, 4.0, 4.0, 5.0, 5.0, 4.0, 4.5, 4.0, 3.0, 4.0, 5.0, 3.0, 4.0, 5.0, 4.0, 2.0), List(4.0), List(4.0), List(4.0), List(5.0), List(3.5), List(3.0), List(3.0, 4.0, 4.0, 3.0, 4.0, 5.0, 4.0, 4.0), List(3.0), List(3.5), List(3.5), List(1.5, 4.5), List(4.0, 4.0), List(1.5, 0.5, 2.0), List(4.0, 3.0, 3.5, 3.0, 3.5, 4.5, 4.0), List(2.0), List(5.0), List(4.0, 3.0, 4.0, 2.0, 5.0, 3.5, 3.0, 4.0, 3.5, 3.5, 3.0, 4.0, 4.5), List(4.0))\n"
+      "text" : "res15: List[List[Double]] = List(List(3.0, 3.0), List(3.0, 4.0, 5.0, 5.0, 3.0, 5.0, 4.0, 5.0, 5.0, 5.0, 2.0, 5.0, 4.0, 4.0, 4.0, 5.0, 5.0, 4.0, 4.5, 4.0, 3.0, 4.0, 5.0, 3.0, 4.0, 5.0, 4.0, 2.0), List(4.0), List(4.0), List(4.0), List(5.0), List(3.5), List(3.0), List(3.0, 4.0, 4.0, 3.0, 4.0, 5.0, 4.0, 4.0), List(3.0), List(3.5), List(3.5), List(1.5, 4.5), List(4.0, 4.0), List(1.5, 0.5, 2.0), List(4.0, 3.0, 3.5, 3.0, 3.5, 4.5, 4.0), List(2.0), List(5.0), List(4.0, 3.0, 4.0, 2.0, 5.0, 3.5, 3.0, 4.0, 3.5, 3.5, 3.0, 4.0, 4.5), List(4.0))\n"
     }, {
       "metadata" : { },
       "data" : {
-        "text/html" : "<div class=\"container-fluid\"><div><div class=\"col-md-12\"><div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon5fb7ccd8e6baae3a5eedc03f4fb9fc4a&quot;,&quot;dataInit&quot;:[{&quot;tl&quot;:&quot;List(3.0)&quot;},{&quot;tl&quot;:&quot;List(4.0, 5.0, 5.0, 3.0, 5.0, 4.0, 5.0, 5.0, 5.0, 2.0, 5.0, 4.0, 4.0, 4.0, 5.0, 5.0, 4.0, 4.5, 4.0, 3.0, 4.0, 5.0, 3.0, 4.0, 5.0, 4.0, 2.0)&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List(4.0, 4.0, 3.0, 4.0, 5.0, 4.0, 4.0)&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List(4.5)&quot;},{&quot;tl&quot;:&quot;List(4.0)&quot;},{&quot;tl&quot;:&quot;List(0.5, 2.0)&quot;},{&quot;tl&quot;:&quot;List(3.0, 3.5, 3.0, 3.5, 4.5, 4.0)&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List(3.0, 4.0, 2.0, 5.0, 3.5, 3.0, 4.0, 3.5, 3.5, 3.0, 4.0, 4.5)&quot;},{&quot;tl&quot;:&quot;List()&quot;}],&quot;genId&quot;:&quot;1363545692&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tableChart'], \n      function(playground, _magictableChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictableChart,\n    \"o\": {\"headers\":[\"tl\"],\"nrow\":20,\"shown\":20,\"width\":600,\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    </div></div></div></div>"
+        "text/html" : "<div class=\"container-fluid\"><div><div class=\"col-md-12\"><div>\n      <script data-this=\"{&quot;dataId&quot;:&quot;anon8fe0954c4005ba307fc1774474be3403&quot;,&quot;dataInit&quot;:[{&quot;tl&quot;:&quot;List(3.0)&quot;},{&quot;tl&quot;:&quot;List(4.0, 5.0, 5.0, 3.0, 5.0, 4.0, 5.0, 5.0, 5.0, 2.0, 5.0, 4.0, 4.0, 4.0, 5.0, 5.0, 4.0, 4.5, 4.0, 3.0, 4.0, 5.0, 3.0, 4.0, 5.0, 4.0, 2.0)&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List(4.0, 4.0, 3.0, 4.0, 5.0, 4.0, 4.0)&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List(4.5)&quot;},{&quot;tl&quot;:&quot;List(4.0)&quot;},{&quot;tl&quot;:&quot;List(0.5, 2.0)&quot;},{&quot;tl&quot;:&quot;List(3.0, 3.5, 3.0, 3.5, 4.5, 4.0)&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List()&quot;},{&quot;tl&quot;:&quot;List(3.0, 4.0, 2.0, 5.0, 3.5, 3.0, 4.0, 3.5, 3.5, 3.0, 4.0, 4.5)&quot;},{&quot;tl&quot;:&quot;List()&quot;}],&quot;genId&quot;:&quot;685676307&quot;}\" type=\"text/x-scoped-javascript\">/*<![CDATA[*/req(['../javascripts/notebook/playground','../javascripts/notebook/magic/tableChart'], \n      function(playground, _magictableChart) {\n        // data ==> data-this (in observable.js's scopedEval) ==> this in JS => { dataId, dataInit, ... }\n        // this ==> scope (in observable.js's scopedEval) ==> this.parentElement ==> div.container below (toHtml)\n\n        playground.call(data,\n                        this\n                        ,\n                        {\n    \"f\": _magictableChart,\n    \"o\": {\"headers\":[\"tl\"],\"nrow\":20,\"shown\":20,\"width\":600,\"height\":400}\n  }\n  \n                        \n                        \n                      );\n      }\n    );/*]]>*/</script>\n    </div></div></div></div>"
       },
       "output_type" : "execute_result",
-      "execution_count" : 44
+      "execution_count" : 25
     } ]
   }, {
     "metadata" : {
@@ -515,14 +506,14 @@
     "outputs" : [ {
       "name" : "stdout",
       "output_type" : "stream",
-      "text" : "res27: com.datastax.driver.core.ResultSet = ResultSet[ exhausted: true, Columns[]]\n"
+      "text" : "res16: com.datastax.driver.core.ResultSet = ResultSet[ exhausted: true, Columns[]]\n"
     }, {
       "metadata" : { },
       "data" : {
         "text/html" : "ResultSet[ exhausted: true, Columns[]]"
       },
       "output_type" : "execute_result",
-      "execution_count" : 45
+      "execution_count" : 26
     } ]
   }, {
     "metadata" : {
@@ -538,12 +529,12 @@
         "text/html" : ""
       },
       "output_type" : "execute_result",
-      "execution_count" : 46
+      "execution_count" : 27
     } ]
   }, {
     "metadata" : { },
     "cell_type" : "markdown",
-    "source" : "Verify the data was inserted in Cassandra by running the following commands in the terminal\n \n* cqlsh\n* use pipeline;\n* desc movies;\n* select * from movies where movieid = 19;"
+    "source" : "Verify the data was inserted in Cassandra by running the following commands in the terminal\n \n* cqlsh\n* use pipeline;\n* desc movies_list_ratings;\n* select * from movies_list_ratings where movieid = 19;"
   }, {
     "metadata" : {
       "trusted" : true,
