@@ -149,7 +149,7 @@
   }, {
     "metadata" : { },
     "cell_type" : "markdown",
-    "source" : "A schema could look like...\n\n<pre>\nCREATE TABLE pop_allele_count (\n  population: text,\n  chromosome: text,\n  start: long,\n  ref: text,\n  alt: text,\n  refCnt: long,\n  altCnt: long,\n  PRIMARY KEY (population, chromosome) \n  );\n\nSELECT * FROM pop_allele_count WHERE population = 'ALL' AND chromosome = '22' \n           AND start >= 16500000 AND start < 16750000;\n</pre>"
+    "source" : "A schema could look like...\n\n<pre>\nCREATE TABLE pop_allele_count (\n  population: text,\n  chromosome: text,\n  start: long,\n  ref: text,\n  alt: text,\n  refCnt: long,\n  altCnt: long,\n  PRIMARY KEY ((population, chromosome), start) \n  );\n\nSELECT * FROM pop_allele_count WHERE population = 'ALL' AND chromosome = '22' \n           AND start >= 16500000 AND start < 16750000;\n</pre>"
   }, {
     "metadata" : {
       "trusted" : true,
