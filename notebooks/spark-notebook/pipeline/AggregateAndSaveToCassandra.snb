@@ -1,0 +1,189 @@
+{
+  "metadata" : {
+    "name" : "AggregateAndSaveToCassandra",
+    "user_save_timestamp" : "1970-01-01T00:00:00.000Z",
+    "auto_save_timestamp" : "1970-01-01T00:00:00.000Z",
+    "language_info" : {
+      "name" : "scala",
+      "file_extension" : "scala",
+      "codemirror_mode" : "text/x-scala"
+    },
+    "trusted" : true,
+    "customLocalRepo" : "/root/.ivy2",
+    "customRepos" : null,
+    "customDeps" : [ "org.bdgenomics.adam % adam-core % 0.15.0", "- org.apache.hadoop % hadoop-client %   _", "- org.apache.spark  % spark-core    %   _", "- org.scala-lang    %     _         %   _", "- org.scoverage     %     _         %   _" ],
+    "customImports" : null,
+    "customSparkConf" : {
+      "spark.executor.cores" : "2",
+      "spark.master" : "local[*]",
+      "spark.cores.max" : "2",
+      "spark.eventLog.dir" : "logs/spark",
+      "spark.cassandra.connection.host" : "127.0.0.1",
+      "spark.eventLog.enabled" : "true",
+      "spark.executor.memory" : "512m",
+      "spark.serializer" : "org.apache.spark.serializer.KryoSerializer",
+      "spark.kryo.registrator" : "org.bdgenomics.adam.serialization.ADAMKryoRegistrator",
+      "spark.kryoserializer.buffer.mb" : "4",
+      "spark.kryo.referenceTracking" : "true"
+    }
+  },
+  "cells" : [ {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Import sparkSQL classes"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "import org.apache.spark.rdd.RDD\nval sqlContext = new org.apache.spark.sql.SQLContext(sparkContext)\nimport sqlContext.implicits._\nimport org.apache.spark.sql.functions._\nimport org.apache.spark.sql.Row",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Data directory"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val dataRoot = \"/root/pipeline/datasets\"",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "Parquet formated FlatGenotypes"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val dataFile = s\"$dataRoot/flat-genotypes13\"",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Load the data: \nWe read the parquet files..."
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val gdf = sqlContext.read.parquet(dataFile)\ngdf.cache()\n()",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "gdf.count",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### We do aggregation computations:\n\nCount reference and alternate alleles for each population"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val byPopulation = gdf.groupBy(\"population\", \"chromosome\", \"start\", \"ref\", \"alt\").agg(sum(gdf(\"refCnt\")) as \"refCnt\", sum(gdf(\"altCnt\")) as \"altCnt\")\n()",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "And we count of the complete dataset"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val allPopulations = gdf.groupBy(\"chromosome\", \"start\", \"ref\", \"alt\")\n                                 .agg(sum(gdf(\"refCnt\")) as \"refCnt\", sum(gdf(\"altCnt\")) as \"altCnt\")\n()",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true
+    },
+    "cell_type" : "code",
+    "source" : "allPopulations.show",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### We defined a structure to hold count data"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "object serCtx extends java.io.Serializable {\n  case class PopAlleleCount(\n  population: String,\n  chromosome: String,\n  start: Long,\n  ref: String,\n  alt: String,\n  refCnt: Long,\n  altCnt: Long\n    ) extends java.io.Serializable\n}\nimport serCtx._\n    ",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### And covert Dataframes aggregates to RDDs"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val countsByPop = byPopulation.rdd.collect {\n   case Row(pop: String, chr: String, start: Long, ref: String, alt: String, refCnt: Long, altCnt: Long) => \n          PopAlleleCount(pop, chr, start, ref, alt, refCnt, altCnt)\n   }",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val countAll = allPopulations.rdd.collect {\n    case Row(chr: String, start: Long, ref: String, alt: String, refCnt: Long, altCnt: Long) => \n          PopAlleleCount(\"ALL\", chr, start, ref, alt, refCnt, altCnt)\n   }",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Now we can save countsByPop and countAll to Cassandra for querying"
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "A schema could look like...\n\n<pre>\nCREATE TABLE pop_allele_count (\n  population: text,\n  chromosome: text,\n  start: long,\n  ref: text,\n  alt: text,\n  refCnt: long,\n  altCnt: long,\n  PRIMARY KEY (population, chromosome, start) \n  );\n\nSELECT * FROM pop_allele_count WHERE population = 'ALL' AND chromosome = '22' \n           AND start >= 16500000 AND start < 16750000;\n</pre>"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "countsByPop.count",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "countAll.count",
+    "outputs" : [ ]
+  } ],
+  "nbformat" : 4
+}

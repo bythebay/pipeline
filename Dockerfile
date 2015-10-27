@@ -31,7 +31,7 @@ RUN \
 
 # Get Latest Pipeline Code
  && cd ~ \
- && git clone https://github.com/bythebay/pipeline.git \
+ && git clone https://github.com/distributed-freaks/pipeline.git \
 
 # Sbt Clean
  && sbt clean clean-files

@@ -1,0 +1,341 @@
+{
+  "metadata" : {
+    "name" : "Adam to Dataframe",
+    "user_save_timestamp" : "1970-01-01T00:00:00.000Z",
+    "auto_save_timestamp" : "1970-01-01T00:00:00.000Z",
+    "language_info" : {
+      "name" : "scala",
+      "file_extension" : "scala",
+      "codemirror_mode" : "text/x-scala"
+    },
+    "trusted" : true,
+    "customLocalRepo" : "/root/.ivy2",
+    "customRepos" : null,
+    "customDeps" : [ "org.bdgenomics.adam % adam-core % 0.15.0", "- org.apache.hadoop % hadoop-client %   _", "- org.apache.spark  % spark-core    %   _", "- org.scala-lang    %     _         %   _", "- org.scoverage     %     _         %   _" ],
+    "customImports" : null,
+    "customSparkConf" : {
+      "spark.executor.cores" : "2",
+      "spark.master" : "local[*]",
+      "spark.cores.max" : "2",
+      "spark.eventLog.dir" : "logs/spark",
+      "spark.cassandra.connection.host" : "127.0.0.1",
+      "spark.eventLog.enabled" : "true",
+      "spark.executor.memory" : "512m",
+      "spark.serializer" : "org.apache.spark.serializer.KryoSerializer",
+      "spark.kryo.registrator" : "org.bdgenomics.adam.serialization.ADAMKryoRegistrator",
+      "spark.kryoserializer.buffer.mb" : "4",
+      "spark.kryo.referenceTracking" : "true"
+    }
+  },
+  "cells" : [ {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Import some stuff here"
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "ADAM for genomics domain classes\n\nRDD for Spark data interface"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "import org.bdgenomics.formats.avro.Genotype\nimport org.bdgenomics.adam.rdd.ADAMContext._\nimport org.bdgenomics.adam.rdd.ADAMContext\n  \nimport org.apache.spark.rdd.RDD",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Data directory"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val dataRoot = \"/root/pipeline/datasets\"",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "Raw dataset: ADAM formated genotypes, chromosome 22 sample (16,000,000 -> 18,000,000)"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val adamFile = s\"$dataRoot/chr22-sample13.adam\"",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Load the data: \nWe create an RDD[Genotype]\n\nGenotype is provided by ADAM\n\nRDD is th interface to define transformations and actions on a distributed dataset\n\nadamLoad is a function provided by ADAM (applies on sparkContext through implicit conversion)"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val gts: RDD[Genotype] = sparkContext.adamLoad(adamFile)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Count the number of genotypes in the dataset"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "gts.count",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Hmmm What is a genotype?"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "gts.first",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Filter on Single nucleotide Polymorphysims\nIn plain english, we only select the simplest genomic variations: substitution of a base by another"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val snpgts = gts.filter{g => \n               val bases = Set(\"A\",\"T\",\"G\",\"C\")\n               bases.contains(g.getVariant.getReferenceAllele) && \n                                      bases.contains(g.getVariant.getAlternateAllele)\n          }",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### We removed some elements"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "snpgts.count",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### We import classes and functions to work with Dataframes"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val sqlContext = new org.apache.spark.sql.SQLContext(sparkContext)\nimport sqlContext.implicits._\nimport org.apache.spark.sql.functions._",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Viva scala ... with system calls"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "import sys.process._",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "We need to point to a file with population data to be joined"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val panelFile = s\"$dataRoot/ALL.panel\"",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "And get it from internet, save it locally"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "s\"wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/integrated_call_samples_v3.20130502.ALL.panel -O ${panelFile}\"!!",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "s\"head $panelFile\" !!",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Broadcast the Map( sampleId -> population )\n\nGive every node in the cluster a copy of the Map"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "import scala.io.Source\ndef extract(filter: (String, String) => Boolean= (s, t) => true) = Source.fromFile(panelFile).getLines().map( line => {\n  val toks = line.split(\"\\t\").toList\n  toks(0) -> toks(1)\n}).toMap.filter( tup => filter(tup._1, tup._2) )\n  \n// panel extract from file, filtering by the 2 populations\ndef panel: Map[String,String] = \n  extract((sampleID: String, pop: String) => true) \n  \n// broadcast the panel \nval bPanel = sparkContext.broadcast(panel)",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### And we filter on the samples with a known population"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val finalGts = snpgts.filter{g => bPanel.value.contains(g.getSampleId)}",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "finalGts.count",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### Some helper functions to format data from ADAM types to simpler schema"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "def variantid(g: Genotype): String = {\n  var v = g.getVariant\n  s\"${v.getContig.getContigName}\"\n}",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val allelesToPair = (g: Genotype, ga: org.bdgenomics.formats.avro.GenotypeAllele) => ga match {\n  case org.bdgenomics.formats.avro.GenotypeAllele.Ref => (1L, 0L)\n  case org.bdgenomics.formats.avro.GenotypeAllele.Alt => (0L, 1L)\n  case _ => (0L, 0L)\n}",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true
+    },
+    "cell_type" : "markdown",
+    "source" : "### We define FlatGenotype, a structure used to store the data we want in a simple table"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "object gCtx extends java.io.Serializable {\n  case class FlatGenotype(\n  population: String,\n  sampleId: String,\n  chromosome: String,\n  start: Long,\n  ref: String,\n  alt: String,\n  refCnt: Long,\n  altCnt: Long\n    )\n}\nimport gCtx._\n    ",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true
+    },
+    "cell_type" : "markdown",
+    "source" : "### And now we transform ADAM Genotypes in Flattened structure simpler to count on"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val flatgts = finalGts.flatMap{ g => \n               g.getAlleles.map{ ga => \n                 val al = allelesToPair(g, ga)\n                 FlatGenotype(bPanel.value.getOrElse(g.getSampleId(), \"\"),\n                              g.getSampleId,\n                              variantid(g),\n                              g.getVariant.getStart,\n                              g.getVariant.getReferenceAllele,\n                              g.getVariant.getAlternateAllele,\n                              al._1,\n                              al._2\n                               )\n                               }\n}",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true
+    },
+    "cell_type" : "code",
+    "source" : "flatgts.cache()",
+    "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### We use the dataframe API because saving/reading/aggregation is much easier...\n\nDefault format is parquet, schema included :)"
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "val gdf = flatgts.toDF()\n()",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true
+    },
+    "cell_type" : "code",
+    "source" : "gdf.cache()\n()",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "gdf.write.save(s\"$dataRoot/flat-genotypes13\")",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : true
+    },
+    "cell_type" : "code",
+    "source" : "",
+    "outputs" : [ ]
+  } ],
+  "nbformat" : 4
+}
