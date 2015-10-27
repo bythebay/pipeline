@@ -175,6 +175,10 @@
     "source" : "val panelFile = s\"$dataRoot/ALL.panel\"",
     "outputs" : [ ]
   }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "And get it from internet, save it locally"
+  }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
@@ -184,9 +188,18 @@
     "source" : "s\"wget ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/integrated_call_samples_v3.20130502.ALL.panel -O ${panelFile}\"!!",
     "outputs" : [ ]
   }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "s\"head $panelFile\" !!",
+    "outputs" : [ ]
+  }, {
     "metadata" : { },
     "cell_type" : "markdown",
-    "source" : "### Broadcast the Map( sampleId -> population )"
+    "source" : "### Broadcast the Map( sampleId -> population )\n\nGive every node in the cluster a copy of the Map"
   }, {
     "metadata" : {
       "trusted" : true,
@@ -246,9 +259,8 @@
       "input_collapsed" : false,
       "collapsed" : true
     },
-    "cell_type" : "code",
-    "source" : "",
-    "outputs" : [ ]
+    "cell_type" : "markdown",
+    "source" : "### We define FlatGenotype, a structure used to store the data we want in a simple table"
   }, {
     "metadata" : {
       "trusted" : true,
@@ -279,7 +291,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : false
+      "collapsed" : true
     },
     "cell_type" : "code",
     "source" : "flatgts.cache()",
@@ -301,7 +313,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : false
+      "collapsed" : true
     },
     "cell_type" : "code",
     "source" : "gdf.cache()\n()",
@@ -310,7 +322,7 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "gdf.write.save(s\"$dataRoot/flat-genotypes13\")",

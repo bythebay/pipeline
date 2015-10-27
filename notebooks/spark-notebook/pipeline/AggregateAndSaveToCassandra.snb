@@ -83,11 +83,15 @@
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
     "source" : "gdf.count",
     "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### We do aggregation computations:\n\nCount reference and alternate alleles for each population"
   }, {
     "metadata" : {
       "trusted" : true,
@@ -97,6 +101,10 @@
     "cell_type" : "code",
     "source" : "val byPopulation = gdf.groupBy(\"population\", \"chromosome\", \"start\", \"ref\", \"alt\").agg(sum(gdf(\"refCnt\")) as \"refCnt\", sum(gdf(\"altCnt\")) as \"altCnt\")\n()",
     "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "And we count of the complete dataset"
   }, {
     "metadata" : {
       "trusted" : true,
@@ -116,6 +124,10 @@
     "source" : "allPopulations.show",
     "outputs" : [ ]
   }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### We defined a structure to hold count data"
+  }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
@@ -124,6 +136,10 @@
     "cell_type" : "code",
     "source" : "object serCtx extends java.io.Serializable {\n  case class PopAlleleCount(\n  population: String,\n  chromosome: String,\n  start: Long,\n  ref: String,\n  alt: String,\n  refCnt: Long,\n  altCnt: Long\n    ) extends java.io.Serializable\n}\nimport serCtx._\n    ",
     "outputs" : [ ]
+  }, {
+    "metadata" : { },
+    "cell_type" : "markdown",
+    "source" : "### And covert Dataframes aggregates to RDDs"
   }, {
     "metadata" : {
       "trusted" : true,
@@ -149,15 +165,24 @@
   }, {
     "metadata" : { },
     "cell_type" : "markdown",
-    "source" : "A schema could look like...\n\n<pre>\nCREATE TABLE pop_allele_count (\n  population: text,\n  chromosome: text,\n  start: long,\n  ref: text,\n  alt: text,\n  refCnt: long,\n  altCnt: long,\n  PRIMARY KEY (population, chromosome) \n  );\n\nSELECT * FROM pop_allele_count WHERE population = 'ALL' AND chromosome = '22' \n           AND start >= 16500000 AND start < 16750000;\n</pre>"
+    "source" : "A schema could look like...\n\n<pre>\nCREATE TABLE pop_allele_count (\n  population: text,\n  chromosome: text,\n  start: long,\n  ref: text,\n  alt: text,\n  refCnt: long,\n  altCnt: long,\n  PRIMARY KEY (population, chromosome, start) \n  );\n\nSELECT * FROM pop_allele_count WHERE population = 'ALL' AND chromosome = '22' \n           AND start >= 16500000 AND start < 16750000;\n</pre>"
   }, {
     "metadata" : {
       "trusted" : true,
       "input_collapsed" : false,
-      "collapsed" : true
+      "collapsed" : false
     },
     "cell_type" : "code",
-    "source" : "",
+    "source" : "countsByPop.count",
+    "outputs" : [ ]
+  }, {
+    "metadata" : {
+      "trusted" : true,
+      "input_collapsed" : false,
+      "collapsed" : false
+    },
+    "cell_type" : "code",
+    "source" : "countAll.count",
     "outputs" : [ ]
   } ],
   "nbformat" : 4
